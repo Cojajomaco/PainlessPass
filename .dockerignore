@@ -1,0 +1,4 @@
+# Avoid pulling in the Python cache files and github stuff. 
+*.pyc
+__pycache__
+.git

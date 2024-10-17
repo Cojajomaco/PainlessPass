@@ -11,54 +11,54 @@ Format:
   - Passwords are stored within the program. 
 
 - As a user, I want to generate passwords, so I can create secure default logins. 
-  - 
+  - A
 
 - As a user, I want to search my passwords, so I can access them easily. 
-  - 
+  - A
 
 - As a user, I don’t want others to view my passwords, so my passwords are kept secure. 
-  - 
+  - A
 
 - As a user, I want to organize my passwords, so they can be accessed easily. 
-  - 
+  - A
 
 - As a user, I want to store information with my passwords, so I can know what purpose they had. 
-  - 
+  - A
 
 - As a user, I want to use MFA for my account, to guarantee the security of my passwords. 
-  - 
+  - A
 
 - As an admin, I want to use MFA for my account, to guarantee the security of my deployment. 
-  - 
+  - A
 
 - As an admin, I want to restrict access to the admin console, to guarantee the security of my deployment. 
-  - 
+  - A
 
 - As an admin, I want the application to be deployed easily, so I can lower administrative overhead. 
-  - 
+  - A
 
 - As an admin, I want to delete users, so I can clean up the database to prevent liability. 
-  - 
+  - A
 
 - As an admin, I do not want to view user passwords, so I cannot be held liable for their accounts. 
-  - 
+  - A
 
 - As a user or admin, I want to view log data, so I can see unauthorized access to my account.
-  - 
+  - A
 
 ## Mis-User Stories
 
 - As a malicious actor, I want to view account passwords, so I can user other people’s credentials. 
-  - 
+  - A
 
 - As a malicious actor, I want to deny access to the service, so the site’s reputation is harmed. 
-  - 
+  - A
 
 - As a malicious actor, I want to inject bad data to corrupt the database, so the web application is harmed. 
-  - 
+  - A
 
 - As a malicious actor, I want to upload malicious code, to exploit the web server. 
-  - 
+  - A
 
 - As a rogue admin, I want to view user’s passwords in plaintext, so I can utilize their data for my own gain. 
-  - 
+  - A

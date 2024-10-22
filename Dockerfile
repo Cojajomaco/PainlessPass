@@ -8,7 +8,9 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install requirements
-RUN pip install --no-cache-dir -r requirements.txt
+RUN \
+apk add --no-cache libpq-dev gcc && \
+pip install --no-cache-dir -r requirements.txt
 
 # Print output from Python commands to Docker container console for feedback
 ENV PYTHONUNBUFFERED 1

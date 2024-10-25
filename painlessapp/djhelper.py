@@ -11,4 +11,4 @@ from django.contrib.auth.models import User
 def instantiate_user(username, password, email=None):
     new_user = User.objects.create_user(username, email, password)
     Folder.objects.create(name="None", user_id=new_user.id)
-    return new_user.id
+    return new_user

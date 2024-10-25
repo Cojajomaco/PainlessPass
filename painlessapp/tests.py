@@ -19,16 +19,16 @@ class UserPasswordsTestCase(TestCase):
         # Create password
         UserPass.objects.create(name="Test Pass", username="testuser", password="testpass",
                                            uri="http://testurl.com", note="Test note",
-                                           user_id=User.objects.get(username="testuser").id)
+                                           user_id=(User.objects.get(username="testuser")).id)
         self.assertTrue(UserPass.objects.exists(name="Test Pass"))
         self.assertTrue(UserPass.objects.exists(username="testuser"))
         self.assertTrue(UserPass.objects.exists(password="testpass"))
         self.assertTrue(UserPass.objects.exists(uri="http://testurl.com"))
         self.assertTrue(UserPass.objects.exists(note="Test note"))
-        self.assertEqual(UserPass.objects.get(name="Test Pass").user_id, User.objects.get(username="testuser").id)
+        self.assertEqual(UserPass.objects.get(name="Test Pass").user_id, (User.objects.get(username="testuser")).id)
 
     def test_create_folder(self):
         # Create a folder
-        Folder.objects.create(name="Test Folder", user_id=User.objects.get(username="testuser").id)
+        Folder.objects.create(name="Test Folder", user_id=(User.objects.get(username="testuser")).id)
         self.assertTrue(Folder.objects.exists(name="Test Folder"))
-        self.assertTrue(Folder.objects.exists(user_id=User.objects.get(username="testuser").id))
+        self.assertTrue(Folder.objects.exists(user_id=(User.objects.get(username="testuser")).id))

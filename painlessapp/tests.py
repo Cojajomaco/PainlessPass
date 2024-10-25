@@ -1,5 +1,5 @@
 from django.test import TestCase
-from djhelper import instantiate_user
+from .djhelper import instantiate_user
 from django.contrib.auth.models import User
 from .models import Folder
 from .models import UserPass

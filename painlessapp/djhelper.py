@@ -10,5 +10,5 @@ from django.contrib.auth.models import User
 # the user would be able to decrypt it to view their data. That's a long-shot goal, though.
 def instantiate_user(username, password, email=None):
     new_user = User.objects.create_user(username, email, password)
-    Folder.objects.create(name="None", user_id=new_user)
+    Folder.objects.create(name="No Folder", user_id=new_user)
     return new_user

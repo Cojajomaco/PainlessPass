@@ -34,5 +34,5 @@ class UserPass(models.Model):
 class Folder(models.Model):
     # name: title of the folder
     # user_id: user who owns the folder
-    name = models.CharField(max_length=255, )
+    name = models.CharField(max_length=255)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

@@ -33,6 +33,6 @@ class UserPasswordsTestCase(TestCase):
     def test_create_folder(self):
         new_user = instantiate_user("testuser", "testpass", "testuser@mek-tech.net")
         # Create a folder
-        Folder.objects.create(name="Test Folder", user_id=(User.objects.get(username="testuser")).id)
+        Folder.objects.create(name="Test Folder", user_id=User.objects.get(username="testuser"))
         self.assertTrue(Folder.objects.exists(name="Test Folder"))
         self.assertTrue(Folder.objects.exists(user_id=new_user))

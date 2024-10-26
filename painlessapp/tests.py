@@ -22,7 +22,7 @@ class UserPasswordsTestCase(TestCase):
         # Create password
         UserPass.objects.create(name="Test Pass", username="testuser", password="testpass",
                                            uri="http://testurl.com", note="Test note",
-                                           user_id=new_user.id)
+                                           user_id=new_user)
         self.assertTrue(UserPass.objects.filter(name="Test Pass").exists())
         self.assertTrue(UserPass.objects.filter(username="testuser").exists())
         self.assertTrue(UserPass.objects.filter(password="testpass").exists())
@@ -33,6 +33,6 @@ class UserPasswordsTestCase(TestCase):
     def test_create_folder(self):
         new_user = instantiate_user("testuser", "testpass", "testuser@mek-tech.net")
         # Create a folder
-        Folder.objects.create(name="Test Folder", user_id=new_user.id)
+        Folder.objects.create(name="Test Folder", user_id=new_user)
         self.assertTrue(Folder.objects.exists(name="Test Folder"))
         self.assertTrue(Folder.objects.exists(user_id=new_user))

@@ -15,14 +15,14 @@ class UserPasswordsTestCase(TestCase):
         self.assertNotEqual(User.objects.get(username="testuser").password, "testpass")
         self.assertEqual(User.objects.get(username="testuser").email, "testuser@mek-tech.net")
         # Default folder object for the user should be created.
-        self.assertTrue(Folder.objects.filter(name="None", user_id=new_user).exists())
+        self.assertTrue(Folder.objects.filter(name="No Folder", user_id=new_user).exists())
 
     def test_create_password(self):
         new_user = instantiate_user("testuser", "testpass", "testuser@mek-tech.net")
         # Create password
         UserPass.objects.create(name="Test Pass", username="testuser", password="testpass",
                                            uri="http://testurl.com", note="Test note",
-                                           user_id=new_user)
+                                           folder="No Folder", user_id=new_user)
         self.assertTrue(UserPass.objects.filter(name="Test Pass").exists())
         self.assertTrue(UserPass.objects.filter(username="testuser").exists())
         self.assertTrue(UserPass.objects.filter(password="testpass").exists())

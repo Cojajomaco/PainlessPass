@@ -12,7 +12,7 @@ class UserPasswordsTestCase(TestCase):
         self.assertEqual(User.objects.count(), 1)
         self.assertEqual(User.objects.get(username="testuser").username, "testuser")
         self.assertEqual(User.objects.get(username="testuser").id, new_user.id)
-        self.assertNotEquals(User.objects.get(username="testuser").password, "testpass")
+        self.assertNotEqual(User.objects.get(username="testuser").password, "testpass")
         self.assertEqual(User.objects.get(username="testuser").email, "testuser@mek-tech.net")
         # Default folder object for the user should be created.
         self.assertTrue(Folder.objects.filter(name="None", user_id=new_user).exists())
@@ -21,7 +21,7 @@ class UserPasswordsTestCase(TestCase):
         new_user = instantiate_user("testuser", "testpass", "testuser@mek-tech.net")
         # Create password
         UserPass.objects.create(name="Test Pass", username="testuser", password="testpass",
-                                           uri="http://testurl.com", note="Test note",
+                                           uri="http://testurl.com", folder="None", note="Test note",
                                            user_id=new_user)
         self.assertTrue(UserPass.objects.filter(name="Test Pass").exists())
         self.assertTrue(UserPass.objects.filter(username="testuser").exists())
@@ -34,5 +34,5 @@ class UserPasswordsTestCase(TestCase):
         new_user = instantiate_user("testuser", "testpass", "testuser@mek-tech.net")
         # Create a folder
         Folder.objects.create(name="Test Folder", user_id=new_user)
-        self.assertTrue(Folder.objects.exists(name="Test Folder"))
-        self.assertTrue(Folder.objects.exists(user_id=new_user))
+        self.assertTrue(Folder.objects.filter(name="Test Folder").exists())
+        self.assertTrue(Folder.objects.filter(user_id=new_user).exists())

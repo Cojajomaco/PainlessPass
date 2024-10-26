@@ -35,4 +35,4 @@ class Folder(models.Model):
     # name: title of the folder
     # user_id: user who owns the folder
     name = models.CharField(max_length=255, )
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

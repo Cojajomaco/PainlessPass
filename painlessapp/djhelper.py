@@ -2,6 +2,7 @@
 from .models import Folder
 from django.contrib.auth.models import User
 
+
 # This creates the user and then also initiates default objects which require foreign key references.
 # For example, user "jim" is created and a default folder model "None" is created.
 # Eventually, if I get this far, this should house special encryption functions
@@ -12,3 +13,7 @@ def instantiate_user(username, password, email=None):
     new_user = User.objects.create_user(username, email, password)
     Folder.objects.create(name="No Folder", user_id=new_user)
     return new_user
+
+# TO-DO:
+# Add randomized encryption key function, then extend instantiate user to include the function
+# as a means to encrypting the PassKey.enc_key value prior to storage.

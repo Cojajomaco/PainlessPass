@@ -20,7 +20,7 @@ class UserPass(models.Model):
     password = models.CharField(max_length=255, blank=True, help_text="This is your password you want to store.")
     uri = models.URLField(max_length=200, blank=True, help_text="This is the website or application "
                                                                 "for your password.")
-    folder = models.ForeignKey('Folder', on_delete=models.CASCADE, default="None", help_text="Select one of your "
+    folder = models.ForeignKey('Folder', on_delete=models.CASCADE, default="No Folder", help_text="Select one of your "
                                                                                              "folders to categorize "
                                                                                         "the password, or select none.")
     note = models.CharField(max_length=255, blank=True, help_text="This is any notes for your password. "

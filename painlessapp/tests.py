@@ -21,7 +21,7 @@ class UserPasswordsTestCase(TestCase):
         new_user = instantiate_user("testuser", "testpass", "testuser@mek-tech.net")
         # Create password
         UserPass.objects.create(name="Test Pass", username="testuser", password="testpass",
-                                           uri="http://testurl.com", folder="None", note="Test note",
+                                           uri="http://testurl.com", note="Test note",
                                            user_id=new_user)
         self.assertTrue(UserPass.objects.filter(name="Test Pass").exists())
         self.assertTrue(UserPass.objects.filter(username="testuser").exists())

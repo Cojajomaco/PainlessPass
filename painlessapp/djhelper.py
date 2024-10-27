@@ -17,3 +17,11 @@ def instantiate_user(username, password, email=None):
 # TO-DO:
 # Add randomized encryption key function, then extend instantiate user to include the function
 # as a means to encrypting the PassKey.enc_key value prior to storage.
+# Make sure the encryption key creation function has some static string of text to differentiate
+# Between an unencrypted string and an encrypted string.
+#
+# Need to add a caching mechanism for user session caching. When a user signs in, the app should
+# automatically use their password to unencrypt the encryption key, then store the unencrypted encryption
+# key within a cache with a user configurable default timing. To start, set it to 15 minute default.
+# Users should be reprompted for their password after the key expires and they attempt an unecryption
+# function to access one of their passwords. 

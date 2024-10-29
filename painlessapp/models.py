@@ -48,4 +48,4 @@ class UserPass(models.Model):
 class PassKey(models.Model):
     user_id = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     salt = models.CharField(max_length=32)
-    enc_key = models.TextField(max_length=1024)
+    enc_key = models.TextField()

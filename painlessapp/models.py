@@ -47,5 +47,5 @@ class UserPass(models.Model):
 # Then implement the encryption and decryption of the key during runtime.
 class PassKey(models.Model):
     user_id = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    salt = models.CharField(max_length=16)
+    salt = models.CharField(max_length=32)
     enc_key = models.CharField(max_length=255)

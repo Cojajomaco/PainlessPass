@@ -23,7 +23,7 @@ def create_fernet_key(salt, password):
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
-        salt=salt,
+        salt=bytes(salt, encoding="utf-8"),
         iterations=480000,
     )
     key = base64.urlsafe_b64encode(kdf.derive(bytes(password, encoding="utf-8")))
@@ -53,7 +53,7 @@ def instantiate_user(username, password, email=None):
     new_user = User.objects.create_user(username, email, password)
 
     # Create encryption key
-    salt = os.urandom(16)
+    salt = base64.b64encode(os.urandom(16)).decode("utf-8")
     fernet_key = create_fernet_key(salt, password)
     gen_enc_key = create_gen_enc_key()
     enc_token = encrypt_gen_enc_key(fernet_key, gen_enc_key)

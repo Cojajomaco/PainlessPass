@@ -45,6 +45,7 @@ class UserPass(models.Model):
 # The encryption key will be encrypted by the user's actual password (not the hash).
 # Need to implement + test encryption of incoming passwords via the "storedKey".
 # Then implement the encryption and decryption of the key during runtime.
-# class PassKey(models.Model):
-#   user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-#   enc_key = models.CharField(max_length=255)
+class PassKey(models.Model):
+    user_id = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    salt = models.CharField(max_length=16)
+    enc_key = models.CharField(max_length=255)

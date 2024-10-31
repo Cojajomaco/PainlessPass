@@ -37,8 +37,8 @@ def encrypt_gen_enc_key(fernetkey, token):
 
 
 # Takes input of (Fernet, token) to decrypt the token.
-def decrypt_gen_enc_key(fernetKey, token):
-    dec_token = fernetKey.decrypt(bytes(token, encoding="utf-8"))
+def decrypt_gen_enc_key(fernetkey, token):
+    dec_token = fernetkey.decrypt(bytes(token, encoding="utf-8"))
     return dec_token.decode("utf-8")
 
 
@@ -57,6 +57,7 @@ def instantiate_user(username, password, email=None):
     fernet_key = create_fernet_key(salt, password)
     gen_enc_key = create_gen_enc_key()
     enc_token = encrypt_gen_enc_key(fernet_key, gen_enc_key)
+    # Store user's encryption key and salt
     PassKey.objects.create(user_id=new_user, salt=salt, enc_key=enc_token)
 
     # Create default folder

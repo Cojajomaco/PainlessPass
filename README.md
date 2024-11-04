@@ -12,9 +12,11 @@ I'll figure this out soon, I guess. The goal is to pretty much have the app runn
 More steps will be added later on to define a secure initial config as right now the app uses insecure default hard-coded creds. 
 
 ## Getting Started
-Ideally, this would honestly be a simple command ran from the host directory:
+These are the commands for now. More to come later!
 ```bash
 docker-compose up
+docker-compose run app python manage.py makemigrations
+docker-compose run app python manage.py migrate
 ```
 
 ## Uh-oh

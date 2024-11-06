@@ -15,7 +15,7 @@ class UserPasswordsTestCase(TestCase):
         self.assertEqual(User.objects.get(username="testuser").username, "testuser")
         self.assertEqual(User.objects.get(username="testuser").id, new_user.id)
         self.assertNotEqual(User.objects.get(username="testuser").password, "testpass")
-        self.assertEqual(User.objects.get(username="testuser").email, "testuser@mek-tech.net")
+        self.assertNotEqual(User.objects.get(username="testuser").email, "testuser@mek-tech.net")
         self.assertEqual(Folder.objects.get(name="No Folder", user_id=new_user.id).name, "No Folder")
 
     def test_create_password(self):

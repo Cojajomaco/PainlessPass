@@ -49,6 +49,10 @@ def decrypt_gen_enc_key(fernetkey, token):
 # The encryption key ideally would be encrypted by the user and stored encrypted, so only
 # the user would be able to decrypt it to view their data. That's a long-shot goal, though.
 def instantiate_user(username, password, email=None):
+    # Enforce email set to None.
+    # TODO: May be redundant. Maybe delete from definition?
+    email = None
+
     # Create new user
     new_user = User.objects.create_user(username, email, password)
 

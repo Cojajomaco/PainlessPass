@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends "base_generic.html" %}
+
+{% block title %}
     <title>PainlessPass - Register</title>
-</head>
-<body>
-    <p>PainlessPass - Register</p>
-</body>
-</html>
+{% endblock %}
+
+{% block content %}
+    <p>PainlessPass Register</p>
+    <form method="POST" class="content-form">
+        {% csrf_token %}
+        {{ register_form.as_p }}
+        <button type="submit" class="form-button">Register</button>
+    </form>
+{% endblock %}

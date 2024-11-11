@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+    <title>PainlessPass - Pass_Entry</title>
+{% endblock %}
+
+{% block content %}
+    <h2>Enter New Password</h2>
+    <form method="POST" class="content-form">
+        {% csrf_token %}
+        {{ password_form.as_p }}
+        <button type="submit" class="form-button">Create</button>
+    </form>
+{% endblock %}

@@ -9,6 +9,10 @@ class Folder(models.Model):
     name = models.CharField(max_length=255)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
+    # Make the choice names pretty and give it a string representation.
+    def __str__(self):
+        return self.name
+
 
 # Individual user passwords
 class UserPass(models.Model):
@@ -37,6 +41,11 @@ class UserPass(models.Model):
     # django.contrib.auth.models.User by default; allows me to refactor
     # it later if I need to for customized authentication models.
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    # Make the choice names pretty and give it a string representation.
+    def __str__(self):
+        return self.name
+
 
 # To-Do:
 # Extend the user class.

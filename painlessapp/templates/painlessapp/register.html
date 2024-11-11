@@ -4,11 +4,16 @@
     <title>PainlessPass - Register</title>
 {% endblock %}
 
+{% block header %}
+    <a href="/painlesspass/home">Home</a>
+{% endblock %}
+
 {% block content %}
-    <p>PainlessPass Register</p>
+    <h2>Create an Account</h2>
     <form method="POST" class="content-form">
         {% csrf_token %}
         {{ register_form.as_p }}
         <button type="submit" class="form-button">Register</button>
     </form>
+    <p id="account-redirect">Already have an account? <a href="/accounts/login">Sign in here.</a></p>
 {% endblock %}

@@ -9,15 +9,13 @@
 <body>
     {% block header %}
     <header>
-    {% if user.is_authenticated %}
-    Hi {{ user.username }}!
+    <a href="/painlesspass/pass_list">Passwords</a>
+    <a href="/painlesspass/settings">Settings</a>
+    <!-- Log Out Button -->
     <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
         <button type="submit">Log Out</button>
     </form>
-    {% else %}
-        <a href="{% url 'login' %}">Log In</a>
-    {% endif %}
     </header>
     {% endblock %}
     {% block content %}

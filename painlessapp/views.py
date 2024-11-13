@@ -5,6 +5,7 @@ from django.template import loader
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import RegistrationForm, NewPasswordForm
+from .models import UserPass
 from .djhelper import instantiate_user
 from django import forms
 from django.contrib.auth.decorators import login_required
@@ -71,7 +72,9 @@ def pass_list(request):
     # Redirect logged-out users to the signin page.
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
-    context = {}
+    # Filter list to ONLY current user objects.
+    userpass_list = UserPass.objects.filter(user_id=request.user)
+    context = {"userpass_list": userpass_list}
     return render(request, "painlessapp/pass_list.html", context)
 
 
@@ -82,8 +85,12 @@ def pass_entry(request, pass_id):
     # Redirect logged-out users to the signin page.
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
+    # Make sure user can access the pass_id
+    userpass_entry = UserPass.objects.get(pk=pass_id)
+    if userpass_entry.user_id != request.user:
+        return HttpResponse('Unauthorized', status=401)
     context = {
-        "pass_id": pass_id,
+        "userpass_entry": userpass_entry,
     }
     return render(request, "painlessapp/pass_entry.html", context)
 

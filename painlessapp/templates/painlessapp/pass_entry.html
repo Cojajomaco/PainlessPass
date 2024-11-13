@@ -6,4 +6,12 @@
 
 {% block content %}
     <h2>Password Entry</h2>
+    <ul>
+        <li>Password Name: {{ userpass_entry.name }}</li>
+        <li>Username: {{ userpass_entry.username }}</li>
+        <li>Password: {{ userpass_entry.password }}</li>
+        <li>URI: {{ userpass_entry.uri }}</li>
+        <li>Folder: {{ userpass_entry.folder }}</li>
+        <li>Note: {{ userpass_entry.note }}</li>
+    </ul>
 {% endblock %}

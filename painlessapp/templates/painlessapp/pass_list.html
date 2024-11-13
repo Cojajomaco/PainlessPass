@@ -7,4 +7,7 @@
 {% block content %}
     <h2>PainlessPass Pass_List</h2>
     <a href="/painlesspass/pass_new">Create Entry</a>
+    {% for userpass in userpass_list %}
+    <li>{{ userpass }}</li>
+    {% endfor %}
 {% endblock %}

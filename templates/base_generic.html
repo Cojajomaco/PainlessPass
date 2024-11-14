@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'painlessapp/style.css' %}">
     {% block title %}
         <title>PainlessPass</title>
     {% endblock %}
@@ -9,13 +11,20 @@
 <body>
     {% block header %}
     <header>
-    <a href="/painlesspass/pass_list">Passwords</a>
-    <a href="/painlesspass/settings">Settings</a>
-    <!-- Log Out Button -->
-    <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Log Out</button>
-    </form>
+        <ul class="top-nav-bar">
+            <li class="top-nav-bar" id="nav-bar-title">PainlessPass</li>
+            {% if user.is_authenticated %}
+            <li class="top-nav-bar"><form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Log Out</button>
+            </form></li>
+            <li class="top-nav-bar"><a href="/painlesspass/settings">Settings</a></li>
+            <li class="top-nav-bar"><a href="/painlesspass/pass_list">Passwords</a></li>
+            <!-- Log Out Button -->
+            {% else %}
+            <li class="top-nav-bar"><a href="{% url 'login' %}">Log In</a></li>
+            {% endif %}
+        </ul>
     </header>
     {% endblock %}
     {% block content %}

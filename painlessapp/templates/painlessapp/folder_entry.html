@@ -1,0 +1,13 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+    <title>PainlessPass - Folder_Entry</title>
+{% endblock %}
+
+{% block content %}
+    <h2>Folder Entry</h2>
+    <a class="body-back-button" href="/painlesspass/folder_list">Back</a>
+    <ul>
+        <li>Folder Name: {{ userfolder_entry.name }}</li>
+    </ul>
+{% endblock %}

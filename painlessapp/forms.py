@@ -56,4 +56,13 @@ class NewPasswordForm(forms.ModelForm):
         except Exception:
             pass
 
-# TODO: Create folder form.
+
+# Form for creating new folder items.
+class NewFolderForm(forms.ModelForm):
+    class Meta:
+        model = Folder
+        fields = ["name", ]
+
+    # Restrict the "folder" field to folders only available to the user.
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

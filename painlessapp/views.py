@@ -4,8 +4,8 @@ from django.http import HttpResponse
 from django.template import loader
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import RegistrationForm, NewPasswordForm
-from .models import UserPass
+from .forms import RegistrationForm, NewPasswordForm, NewFolderForm
+from .models import UserPass, Folder
 from .djhelper import instantiate_user
 from django import forms
 from django.contrib.auth.decorators import login_required
@@ -74,7 +74,9 @@ def pass_list(request):
         return redirect("/accounts/login")
     # Filter list to ONLY current user objects.
     userpass_list = UserPass.objects.filter(user_id=request.user)
-    context = {"userpass_list": userpass_list}
+    folder_list = Folder.objects.filter(user_id=request.user)
+    context = {"userpass_list": userpass_list,
+               "folder_list": folder_list}
     return render(request, "painlessapp/pass_list.html", context)
 
 
@@ -105,7 +107,7 @@ def pass_new(request):
         # Create the form object to validate data
         password_form = NewPasswordForm(request.POST, user_id=request.user)
         if password_form.is_valid():
-            # Set user_id (owner) of object to the logged in user.
+            # Set user_id (owner) of object to the logged-in user.
             password_form.instance.user_id = request.user
 
             # TODO: Encrypt password prior to storage
@@ -128,3 +130,57 @@ def settings(request):
         return redirect("/accounts/login")
     context = {}
     return render(request, "painlessapp/settings.html", context)
+
+
+# Call to create a folder.
+@login_required
+def folder_new(request):
+    # Redirect logged-out users to the signin page.
+    if not request.user.is_authenticated:
+        return redirect("/accounts/login")
+
+    if request.method == 'POST':
+        # Create the form object to validate data
+        folder_form = NewFolderForm(request.POST)
+        if folder_form.is_valid():
+            # Set user_id (owner) of object to the logged-in user.
+            folder_form.instance.user_id = request.user
+
+            # TODO: Encrypt password prior to storage
+            # Save the Folder model after validating the form.
+            new_folder = folder_form.save()
+            return redirect('/painlesspass/folder_entry/' + str(new_folder.pk))
+
+    else:
+        # Creates folder form and feeds the currently logged-in user as an argument.
+        folder_form = NewFolderForm()
+    context = {"folder_form": folder_form}
+    return render(request, "painlessapp/folder_new.html", context)
+
+
+# Lists folders.
+@login_required
+def folder_list(request):
+    # Redirect logged-out users to the signin page.
+    if not request.user.is_authenticated:
+        return redirect("/accounts/login")
+    # Filter list to ONLY current user objects.
+    userfolder_list = Folder.objects.filter(user_id=request.user)
+    context = {"userfolder_list": userfolder_list}
+    return render(request, "painlessapp/folder_list.html", context)
+
+
+# Show specific folder entry.
+@login_required
+def folder_entry(request, folder_id):
+    # Redirect logged-out users to the signin page.
+    if not request.user.is_authenticated:
+        return redirect("/accounts/login")
+    # Make sure user can access the folder
+    userfolder_entry = Folder.objects.get(pk=folder_id)
+    if userfolder_entry.user_id != request.user:
+        return HttpResponse('Unauthorized', status=401)
+    context = {
+        "userfolder_entry": userfolder_entry,
+    }
+    return render(request, "painlessapp/folder_entry.html", context)

@@ -9,6 +9,10 @@ class Folder(models.Model):
     name = models.CharField(max_length=255)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
+    # Make folders unique with name / user_id combo
+    class Meta:
+        unique_together = ('name', 'user_id',)
+
     # Make the choice names pretty and give it a string representation.
     def __str__(self):
         return self.name

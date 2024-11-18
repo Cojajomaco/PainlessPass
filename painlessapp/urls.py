@@ -13,5 +13,7 @@ urlpatterns = [
     path("folder_list/", views.folder_list, name="folder_list"),
     path("folder_entry/<int:folder_id>/", views.folder_entry, name="folder_entry"),
     path("folder_new/", views.folder_new, name="folder_new"),
+    path("folder_delete/<int:folder_id>/", views.folder_delete, name="folder_delete"),
+    path("pass_delete/<int:pass_id>/", views.pass_delete, name="pass_delete"),
     # API REQUESTS
 ]

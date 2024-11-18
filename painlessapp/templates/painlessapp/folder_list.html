@@ -14,7 +14,13 @@
     <h4>Folders</h4>
     <ul class="user-folder-list">
         {% for folder in userfolder_list %}
-        <li><a class="user-folder-list" href="/painlesspass/folder_entry/{{ folder.pk }}">{{ folder }}</a></li>
+        {% if folder.name != "No Folder" %}
+        <li><a class="user-folder-list" href="/painlesspass/folder_entry/{{ folder.pk }}">{{ folder }}</a>
+        <form class="delete-item-form" action="/painlesspass/folder_delete/{{ folder.pk }}">
+            <input type="submit" value="Delete Folder" />
+        </form>
+        </li>
+        {% endif %}
         {% endfor %}
     </ul>
 {% endblock %}

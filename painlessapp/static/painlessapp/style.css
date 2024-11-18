@@ -33,6 +33,9 @@ li.top-nav-bar a {
     font-size: large;
     font-weight: bold;
 }
+.delete-item-form {
+    display: inline;
+}
 li.top-nav-bar a:hover {
     color: lightgrey;
 }

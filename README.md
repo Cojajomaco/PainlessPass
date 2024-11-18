@@ -14,6 +14,7 @@ More steps will be added later on to define a secure initial config as right now
 ## Getting Started
 These are the commands for now. More to come later!
 ```bash
+docker-compose build
 docker-compose up
 docker-compose run app python manage.py makemigrations
 docker-compose run app python manage.py migrate

@@ -21,7 +21,7 @@
     <header>
 		<div class="top-nav-bar">
 			<ul class="top-nav-bar">
-				<li class="top-nav-bar" id="nav-bar-title">PainlessPass</li>
+                <li class="top-nav-bar" id="nav-bar-title-li"><a href="/painlesspass/home" id="nav-bar-title-a">PainlessPass</a></li>
                 {% if user.is_authenticated %}
 				<!-- Log out button and navigation menu to display if user IS authenticated -->
 				<li class="top-nav-bar"><form action="{% url 'logout' %}" method="post">
@@ -33,6 +33,7 @@
                 {% else %}
 				<!-- Log in button to display only if user is NOT authenticated -->
 				<li class="top-nav-bar"><a href="{% url 'login' %}">Log In</a></li>
+                <li class="top-nav-bar"><a href="/painlesspass/register">Register</a></li>
                 {% endif %}
 			</ul>
 		</div>

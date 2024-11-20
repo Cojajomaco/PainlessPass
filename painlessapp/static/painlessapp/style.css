@@ -46,13 +46,18 @@ body {
 }
 
 /* The "PainlessPass" title along the top-left of the site */
-#nav-bar-title {
+#nav-bar-title-li {
     text-align: center;
     float: left;
     padding: 10px 20px;
     color: white;
     font-size: 22px;
     font-weight: bold;
+}
+
+/* PainlessPass link along top-left of main navbar */
+#nav-bar-title-a {
+	padding: 0;
 }
 
 /* Hover options for buttons to show they are clickable */

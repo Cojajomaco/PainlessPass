@@ -3,6 +3,14 @@
 <head>
     <meta charset="UTF-8">
     {% load static %}
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- Bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Custom stylesheets -->
     <link rel="stylesheet" href="{% static 'painlessapp/style.css' %}">
     {% block title %}
         <title>PainlessPass</title>
@@ -11,23 +19,23 @@
 <body>
     {% block header %}
     <header>
-        <div class="top-nav-bar">
-            <ul class="top-nav-bar">
-                <li class="top-nav-bar" id="nav-bar-title">PainlessPass</li>
+		<div class="top-nav-bar">
+			<ul class="top-nav-bar">
+				<li class="top-nav-bar" id="nav-bar-title">PainlessPass</li>
                 {% if user.is_authenticated %}
-                <!-- Log out button and navigation menu to display if user IS authenticated -->
-                <li class="top-nav-bar"><form action="{% url 'logout' %}" method="post">
+				<!-- Log out button and navigation menu to display if user IS authenticated -->
+				<li class="top-nav-bar"><form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}
-                    <button type="submit">Log Out</button>
-                </form></li>
-                <li class="top-nav-bar"><a href="/painlesspass/settings">Settings</a></li>
-                <li class="top-nav-bar"><a href="/painlesspass/pass_list">Passwords</a></li>
+					<button type="submit">Log Out</button>
+				</form></li>
+				<li class="top-nav-bar"><a href="/painlesspass/settings">Settings</a></li>
+				<li class="top-nav-bar"><a href="/painlesspass/pass_list">Passwords</a></li>
                 {% else %}
-                <!-- Log in button to display only if user is NOT authenticated -->
-                <li class="top-nav-bar"><a href="{% url 'login' %}">Log In</a></li>
+				<!-- Log in button to display only if user is NOT authenticated -->
+				<li class="top-nav-bar"><a href="{% url 'login' %}">Log In</a></li>
                 {% endif %}
-            </ul>
-        </div>
+			</ul>
+		</div>
     </header>
     {% endblock %}
     {% block content_header %}
@@ -37,9 +45,16 @@
         <!-- content stuff goes here in each extension -->
     {% endblock %}
     {% block footer %}
-    <footer>
-        <p>Footer</p>
+    <footer class="fixed-bottom">
+        <div class="text-center p-2 align-self-center" style="background-color: dimgrey; color:white;">
+            PainlessPass by Cojajomaco
+        </div>
     </footer>
     {% endblock %}
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 </body>
 </html>

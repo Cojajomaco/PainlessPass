@@ -11,9 +11,11 @@
 {% block content %}
     <h2>Enter New Folder Name</h2>
     <a class="body-back-button" href="/painlesspass/folder_list">Back</a>
-    <form method="POST" class="content-form">
-        {% csrf_token %}
-        {{ folder_form.as_p }}
-        <button type="submit" class="form-button">Create</button>
-    </form>
+    <div class="form-group">
+        <form method="POST">
+            {% csrf_token %}
+            {{ folder_form.as_p }}
+            <button type="submit" class="form-button">Create</button>
+        </form>
+    </div>
 {% endblock %}

@@ -14,6 +14,12 @@
     <form method="POST" class="content-form">
         {% csrf_token %}
         {{ password_form.as_p }}
+        <!-- TODO: Make pretty field by iterating and coupling with bootstrap -->
+        {% comment %}
+        {% for field in password_form %}
+        {{ field.name }}
+        {% endfor %}
+        {% endcomment %}
         <button type="submit" class="form-button">Create</button>
     </form>
 {% endblock %}

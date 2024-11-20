@@ -4,13 +4,12 @@
     <title>PainlessPass - Folder_List</title>
 {% endblock %}
 
+{% block content_header %}
+{% include "base_folder-pass.html" %}
+{% endblock %}
+
 {% block content %}
     <h2>PainlessPass Folder_List</h2>
-    <ul class="user-list-nav">
-        <li><a href="/painlesspass/pass_new">Create Password</a></li>
-        <li><a href="/painlesspass/folder_new">Create Folder</a></li>
-        <li><a href="/painlesspass/pass_list">Password List</a></li>
-    </ul>
     <h4>Folders</h4>
     <ul class="user-folder-list">
         {% for folder in userfolder_list %}

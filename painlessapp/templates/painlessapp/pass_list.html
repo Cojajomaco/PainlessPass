@@ -4,22 +4,20 @@
     <title>PainlessPass - Pass_List</title>
 {% endblock %}
 
-{% block content %}
-    <h2>PainlessPass Pass_List</h2>
-    <ul class="user-list-nav">
-        <li><a href="/painlesspass/pass_new">Create Password</a></li>
-        <li><a href="/painlesspass/folder_new">Create Folder</a></li>
-        <li><a href="/painlesspass/folder_list">Folder List</a></li>
-    </ul>
-    {% for folder in folder_list %}
-    <h4>{{ folder }}</h4>
-    <ul class="user-pass-ulist">
+{% block content_header %}
+{% include "base_folder-pass.html" %}
+{% endblock %}
 
-    {% for userpass in userpass_list %}
-        {% if folder.pk == userpass.folder.pk  %}
-        <li><a class="user-pass-list" href="/painlesspass/pass_entry/{{ userpass.pk }}">{{ userpass }}</a></li>
-        {% endif %}
-    {% endfor %}
-    </ul>
-    {% endfor %}
+{% block content %}
+<h2>PainlessPass Pass_List</h2>
+{% for folder in folder_list %}
+<h4>{{ folder }}</h4>
+<ul class="user-pass-ulist">
+{% for userpass in userpass_list %}
+    {% if folder.pk == userpass.folder.pk  %}
+    <li><a class="user-pass-list" href="/painlesspass/pass_entry/{{ userpass.pk }}">{{ userpass }}</a></li>
+    {% endif %}
+{% endfor %}
+</ul>
+{% endfor %}
 {% endblock %}

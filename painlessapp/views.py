@@ -148,7 +148,7 @@ def folder_new(request):
                 # Set user_id (owner) of object to the logged-in user.
                 folder_form.instance.user_id = request.user
 
-                # TODO: Encrypt password prior to storage
+                # TODO: Create error for when a folder exists with same user_id/name pair
                 # Save the Folder model after validating the form.
                 new_folder = folder_form.save()
                 return redirect('/painlesspass/folder_entry/' + str(new_folder.pk))

@@ -10,14 +10,20 @@
 
 {% block content %}
 <h2>PainlessPass Pass_List</h2>
+
+<!-- Grab each folder the user has created -->
 {% for folder in folder_list %}
 <h4>{{ folder }}</h4>
 <ul class="user-pass-ulist">
+
+<!-- Grab each password within each folder -->
 {% for userpass in userpass_list %}
     {% if folder.pk == userpass.folder.pk  %}
     <li><a class="user-pass-list" href="/painlesspass/pass_entry/{{ userpass.pk }}">{{ userpass }}</a></li>
     {% endif %}
 {% endfor %}
+
 </ul>
 {% endfor %}
+
 {% endblock %}

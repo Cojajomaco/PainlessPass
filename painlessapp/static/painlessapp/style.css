@@ -40,7 +40,7 @@ body {
     float: right;
     padding: 14px 16px;
 	text-align: center;
-	height: 46px;
+	height: 52px;
     font-family: "Arial", serif;
 	font-size: 15px;
 }
@@ -75,12 +75,11 @@ body {
 }
 .sub-user-list-nav {
 	float: left;
-	overflow: none;
 }
 .sub-user-list-nav button {
     outline: none;
 	background-color: inherit;
-	padding: 14px 24px;
+	padding: 13px 24px;
 	color: white;
 	font-size: 16px;
 	position: relative;
@@ -127,4 +126,13 @@ body {
 /* Button that deletes individual items within a list */
 .delete-item-form {
     display: inline;
+}
+
+/* Overwriting Boostrap Defaults here */
+div {
+	background-color: inherit;
+}
+
+form {
+	background-color: inherit;
 }

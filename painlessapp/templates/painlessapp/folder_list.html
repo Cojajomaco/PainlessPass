@@ -11,15 +11,25 @@
 {% block content %}
     <h2>PainlessPass Folder_List</h2>
     <h4>Folders</h4>
-    <ul class="user-folder-list">
+    <!-- What to do if no folders exist except the default -->
+    <div class="user-folder-list">
+    {% if userfolder_list.count == 1 %}
+        <p>You have no folders</p>
+        <a href="/painlesspass/folder_new/">Create one?</a>
+
+
+    {% else %}
+        <ul class="user-folder-list">
         {% for folder in userfolder_list %}
-        {% if folder.name != "No Folder" %}
-        <li><a class="user-folder-list" href="/painlesspass/folder_entry/{{ folder.pk }}">{{ folder }}</a>
-        <form class="delete-item-form" action="/painlesspass/folder_delete/{{ folder.pk }}">
-            <input type="submit" value="Delete Folder" />
-        </form>
-        </li>
-        {% endif %}
+            {% if folder.name != "No Folder" %}
+            <li><a class="user-folder-list" href="/painlesspass/folder_entry/{{ folder.pk }}">{{ folder }}</a>
+            <form class="delete-item-form" action="/painlesspass/folder_delete/{{ folder.pk }}">
+                <input type="submit" value="Delete Folder" />
+            </form>
+            </li>
+            {% endif %}
         {% endfor %}
-    </ul>
+        </ul>
+    {% endif %}
+    </div>
 {% endblock %}

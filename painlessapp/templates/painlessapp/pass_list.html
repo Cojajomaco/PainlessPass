@@ -9,21 +9,48 @@
 {% endblock %}
 
 {% block content %}
-<h2>PainlessPass Pass_List</h2>
+<div class="main-pass-list"> <!-- div to hold all password objects -->
+    <h2>PainlessPass Pass_List</h2>
 
-<!-- Grab each folder the user has created -->
-{% for folder in folder_list %}
-<h4>{{ folder }}</h4>
-<ul class="user-pass-ulist">
+    <!-- Check if the user has any passwords - prompt for creation if they don't -->
+    {% if userpass_list.count == 0 %}
+        <p>You have no passwords</p>
+        <a href="/painlesspass/pass_new/">Create one?</a>
 
-<!-- Grab each password within each folder -->
-{% for userpass in userpass_list %}
-    {% if folder.pk == userpass.folder.pk  %}
-    <li><a class="user-pass-list" href="/painlesspass/pass_entry/{{ userpass.pk }}">{{ userpass }}</a></li>
-    {% endif %}
-{% endfor %}
+    {% else %}
+    <!-- Make a table with all passwords! -->
 
-</ul>
-{% endfor %}
+    <!-- The div to hold the table that contains all user passwords. Hopefully can use JS to sort this later. -->
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-light">
+                <!-- Table column header -->
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">URI</th>
+                    <th scope="col">Folder</th>
+                    <th scope="col">Note</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
 
+            <!-- Add passwords to the table -->
+            {% for userpass in userpass_list %}
+            <tbody>
+                <td><a href="/painlesspass/pass_entry/{{ userpass.pk }}">{{ userpass.name }}</a></td>
+                <td>{{ userpass.username }}</td>
+                <td>{{ userpass.password }}</td>
+                <td>{{ userpass.uri }}</td>
+                <td>{{ userpass.folder }}</td>
+                <td>{{ userpass.note }}</td>
+                <td>Action Placeholder</td>
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endif %}
+</div>
 {% endblock %}

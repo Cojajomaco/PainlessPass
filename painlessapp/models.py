@@ -9,6 +9,11 @@ class Folder(models.Model):
     name = models.CharField(max_length=255)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
+    # These use Django auto_add features to add a timestamp to show
+    # when an object was created or modified
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
     # Make folders unique with name / user_id combo
     class Meta:
         unique_together = ('name', 'user_id',)
@@ -41,6 +46,12 @@ class UserPass(models.Model):
                                                                            "select none.")
     note = models.CharField(max_length=255, blank=True, help_text="This is any notes for your password. "
                                                                   "Keep it short!")
+
+    # These use Django auto_add features to add a timestamp to show
+    # when an object was created or modified
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
     # user_id references "settings.AUTH_USER_MODEL" which points to
     # django.contrib.auth.models.User by default; allows me to refactor
     # it later if I need to for customized authentication models.

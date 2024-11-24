@@ -75,6 +75,7 @@ WSGI_APPLICATION = 'painlesssite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# db_sqlite set to 'True' will allow sqlite to run as local DB. Good for dev.
 db_sqlite = True
 
 if db_sqlite:

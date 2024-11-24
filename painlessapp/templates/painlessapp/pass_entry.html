@@ -1,4 +1,5 @@
 {% extends "base_generic.html" %}
+{% load tz %}
 
 {% block title %}
     <title>PainlessPass - Pass_Entry</title>
@@ -18,5 +19,7 @@
         <li>URI: {{ userpass_entry.uri }}</li>
         <li>Folder: {{ userpass_entry.folder }}</li>
         <li>Note: {{ userpass_entry.note }}</li>
+        <li>Date Created: {{ userpass_entry.created_at }}</li>
+        <li>Date Modified: {{ userpass_entry.modified_at }}</li>
     </ul>
 {% endblock %}

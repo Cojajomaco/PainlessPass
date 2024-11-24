@@ -56,12 +56,14 @@ def register(request):
             try:
                 new_pass = register_form.clean_password2()
             except forms.ValidationError:
+                # If passwords don't match, redirect with error message explaining
                 messages.info(request, "Passwords do not match.")
                 return redirect('register')
             # This actually creates the user and initiates some important objects.
             instantiate_user(new_username, new_pass)
             user = authenticate(username=new_username, password=new_pass)
-            # TODO: Store unencrypted user key variable in cache, similar to CustomLoginView
+            # Get user password, decrypt GEK, store in volatile cache
+            decrypt_and_store_key(user, new_pass)
             login(request, user)
             return redirect('home')
 
@@ -82,8 +84,6 @@ def pass_list(request):
     context = {"userpass_list": userpass_list,
                "folder_list": folder_list}
 
-    # TODO: delete this snippet
-    print(cache.get(str(request.user) + "-GEK"))
     return render(request, "painlessapp/pass_list.html", context)
 
 
@@ -97,7 +97,6 @@ def pass_entry(request, pass_id):
 
     # Grab user GEK for potential use in FKEY generation for encryption
     user_GEK = cache.get(str(request.user) + "-GEK")
-    print(user_GEK)
 
     # Check if GEK is available from the cache for encryption. If not, prompt for login...
     if user_GEK is None:
@@ -123,7 +122,6 @@ def pass_new(request):
 
     # Grab user GEK for potential use in FKEY generation for encryption
     user_GEK = cache.get(str(request.user) + "-GEK")
-    print(user_GEK)
 
     # Check if GEK is available from the cache for encryption. If not, prompt for login...
     if user_GEK is None:
@@ -136,7 +134,6 @@ def pass_new(request):
         if password_form.is_valid():
             # Set user_id (owner) of object to the logged-in user.
             password_form.instance.user_id = request.user
-
 
             # Pass to function that does the encryption
             enc_NewPass = encrypt_user_pass(request.user.id, password_form.clean().get('password'))
@@ -172,24 +169,34 @@ def folder_new(request):
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
 
+    # Create the folder form object. If it's a GET operation, it will be empty.
+    # A POST operation will modify the form and return based on modifications.
+    folder_form = NewFolderForm()
+
     if request.method == 'POST':
         # Create the form object to validate data
         folder_form = NewFolderForm(request.POST)
         if folder_form.is_valid():
-            # Prevent naming folder "No Folder"
-            if folder_form.cleaned_data['name'] != "No Folder":
-                # Set user_id (owner) of object to the logged-in user.
-                folder_form.instance.user_id = request.user
 
-                # TODO: Create error for when a folder exists with same user_id/name pair
-                # Save the Folder model after validating the form.
+            # Form Error Cases
+            # Saving cleaned name for use in error checks
+            new_folder_name = folder_form.cleaned_data['name']
+            # Prevent naming folder "No Folder"
+            if new_folder_name == "No Folder":
+                folder_form.add_error('name', 'The folder cannot be titled "No Folder".')
+
+            # Checking for a folder that violates unique name per user Folder model constraint
+            if Folder.objects.filter(name=new_folder_name, user_id=request.user).exists():
+                folder_form.add_error('name', 'A folder already exists with that name.')
+
+            # Set user_id (owner) of object to the logged-in user.
+            folder_form.instance.user_id = request.user
+
+            # Verify there are no errors in the form, then save and return a successful page
+            if len(folder_form.errors) == 0:
                 new_folder = folder_form.save()
                 return redirect('/painlesspass/folder_entry/' + str(new_folder.pk))
-            else:
-                folder_form = NewFolderForm()
-    else:
-        # Creates folder form and feeds the currently logged-in user as an argument.
-        folder_form = NewFolderForm()
+
     context = {"folder_form": folder_form}
     return render(request, "painlessapp/folder_new.html", context)
 
@@ -246,7 +253,6 @@ def folder_delete(request, folder_id):
 
     userfolder_list = Folder.objects.filter(user_id=request.user)
 
-    ### TODO: Maybe add context for why a request fails with same name as other folder...
     context = {"userfolder_list": userfolder_list}
     return render(request, "painlessapp/folder_list.html", context)
 
@@ -254,10 +260,10 @@ def folder_delete(request, folder_id):
 # Delete password
 @login_required
 def pass_delete(request, pass_id):
-    ### TODO: Double check that user requests are filtered
     # Redirect logged-out users to the signin page.
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
+
     # Make sure user can access the pass_id
     userpass_entry = UserPass.objects.get(pk=pass_id, user_id=request.user)
     if userpass_entry.user_id != request.user:
@@ -280,6 +286,6 @@ class CustomLoginView(LoginView):
         """Security check complete. Log the user in."""
         auth_login(self.request, form.get_user())
 
-        # Get user password, decrypt GEK, store in volatile cache
+        # Get user password, decrypt GEK, store in volatile cache for usage in encryption functions
         decrypt_and_store_key(self.request.user, form.clean().get('password'))
         return HttpResponseRedirect(self.get_success_url())

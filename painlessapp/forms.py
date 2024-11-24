@@ -67,8 +67,7 @@ class NewFolderForm(forms.ModelForm):
         super(NewFolderForm, self).clean()
 
         if self.cleaned_data['name'] == 'No Folder':
-            self._errors['name'] = 'The folder cannot be titled "No Folder".'
-            raise forms.ValidationError(self._errors['name'])
+            self.add_error('name', 'The folder cannot be titled "No Folder".')
 
     # Restrict the "folder" field to folders only available to the user.
     def __init__(self, *args, **kwargs):

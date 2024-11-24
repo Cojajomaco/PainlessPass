@@ -97,6 +97,8 @@ def decrypt_and_store_key(userid, userpass):
     user_key = create_fernet_key(user_pass_key.salt, userpass)
     user_encrypted_key = user_pass_key.enc_key
     unenc_user_gek = decrypt_gen_enc_key(user_key, user_encrypted_key)
+    print(unenc_user_gek)
+    print(str(userid))
     cache.set(str(userid) + "-GEK", unenc_user_gek, None)
 
 

@@ -12,6 +12,7 @@ from django.core.cache import cache
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import login as auth_login, logout
 from django.http import HttpResponseRedirect
+from django.utils import timezone
 
 
 # First page as a generic landing page.
@@ -94,6 +95,9 @@ def pass_entry(request, pass_id):
     # Redirect logged-out users to the signin page.
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
+
+    # TODO: Customize timezones based on a Settings model which stores timezones
+    timezone.activate('America/Chicago')
 
     # Grab user GEK for potential use in FKEY generation for encryption
     user_GEK = cache.get(str(request.user) + "-GEK")
@@ -207,6 +211,7 @@ def folder_list(request):
     # Redirect logged-out users to the signin page.
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
+
     # Filter list to ONLY current user objects.
     userfolder_list = Folder.objects.filter(user_id=request.user)
     context = {"userfolder_list": userfolder_list}
@@ -219,6 +224,10 @@ def folder_entry(request, folder_id):
     # Redirect logged-out users to the signin page.
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
+
+    # TODO: Customize timezones based on a Settings model which stores timezones
+    timezone.activate('America/Chicago')
+
     # Make sure user can access the folder
     userfolder_entry = Folder.objects.get(pk=folder_id, user_id=request.user)
     if userfolder_entry.user_id != request.user:

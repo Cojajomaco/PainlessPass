@@ -28,7 +28,7 @@
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Username</th>
-                    <th scope="col">Password</th>
+                    <th scope="col" style="max-width: 100px;white-space: nowrap;overflow: hidden;">Encrypted Password</th>
                     <th scope="col">URI</th>
                     <th scope="col">Folder</th>
                     <th scope="col">Note</th>
@@ -36,18 +36,23 @@
                 </tr>
             </thead>
 
+            <tbody>
             <!-- Add passwords to the table -->
             {% for userpass in userpass_list %}
-            <tbody>
-                <td><a href="/painlesspass/pass_entry/{{ userpass.pk }}">{{ userpass.name }}</a></td>
-                <td>{{ userpass.username }}</td>
-                <td>{{ userpass.password }}</td>
-                <td>{{ userpass.uri }}</td>
-                <td>{{ userpass.folder }}</td>
-                <td>{{ userpass.note }}</td>
-                <td>Action Placeholder</td>
-            </tbody>
+                <tr>
+                    <td><a href="/painlesspass/pass_entry/{{ userpass.pk }}">{{ userpass.name }}</a></td>
+                    <td>{{ userpass.username }}</td>
+                    <!-- Made this one to have a scrollbar to show full encrypted password. -->
+                    <td style="max-width: 100px;
+                        white-space: nowrap; overflow-y:hidden;
+                        overflow-x: scroll;">{{ userpass.password }}</td>
+                    <td>{{ userpass.uri }}</td>
+                    <td>{{ userpass.folder }}</td>
+                    <td>{{ userpass.note }}</td>
+                    <td>Action Placeholder</td>
+                </tr>
             {% endfor %}
+            </tbody>
         </table>
     </div>
 

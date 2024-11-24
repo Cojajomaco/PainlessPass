@@ -1,14 +1,17 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
-from django.template import loader
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import RegistrationForm, NewPasswordForm, NewFolderForm
 from .models import UserPass, Folder
-from .djhelper import instantiate_user
+from .djhelper import instantiate_user, decrypt_and_store_key, encrypt_user_pass, decrypt_user_pass
 from django import forms
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
+from django.contrib.auth.views import LoginView
+from django.contrib.auth import login as auth_login, logout
+from django.http import HttpResponseRedirect
 
 
 # First page as a generic landing page.
@@ -58,6 +61,7 @@ def register(request):
             # This actually creates the user and initiates some important objects.
             instantiate_user(new_username, new_pass)
             user = authenticate(username=new_username, password=new_pass)
+            # TODO: Store unencrypted user key variable in cache, similar to CustomLoginView
             login(request, user)
             return redirect('home')
 
@@ -77,6 +81,9 @@ def pass_list(request):
     folder_list = Folder.objects.filter(user_id=request.user)
     context = {"userpass_list": userpass_list,
                "folder_list": folder_list}
+
+    # TODO: delete this snippet
+    print(cache.get(str(request.user) + "-GEK"))
     return render(request, "painlessapp/pass_list.html", context)
 
 
@@ -87,8 +94,19 @@ def pass_entry(request, pass_id):
     # Redirect logged-out users to the signin page.
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
+
+    # Grab user GEK for potential use in FKEY generation for encryption
+    user_GEK = cache.get(str(request.user) + "-GEK")
+    print(user_GEK)
+
+    # Check if GEK is available from the cache for encryption. If not, prompt for login...
+    if user_GEK is None:
+        logout(request)
+        return redirect('/painlesspass/login/')
+
     # Make sure user can access the pass_id
     userpass_entry = UserPass.objects.get(pk=pass_id, user_id=request.user)
+    userpass_entry.password = decrypt_user_pass(request.user.id, userpass_entry.password)
     if userpass_entry.user_id != request.user:
         return HttpResponse('Unauthorized', status=401)
     context = {
@@ -103,6 +121,15 @@ def pass_new(request):
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
 
+    # Grab user GEK for potential use in FKEY generation for encryption
+    user_GEK = cache.get(str(request.user) + "-GEK")
+    print(user_GEK)
+
+    # Check if GEK is available from the cache for encryption. If not, prompt for login...
+    if user_GEK is None:
+        logout(request)
+        return redirect('/painlesspass/login/')
+
     if request.method == 'POST':
         # Create the form object to validate data
         password_form = NewPasswordForm(request.POST, user_id=request.user)
@@ -110,9 +137,15 @@ def pass_new(request):
             # Set user_id (owner) of object to the logged-in user.
             password_form.instance.user_id = request.user
 
-            # TODO: Encrypt password prior to storage
-            # Save the UserPass model after validating the form.
-            new_pass = password_form.save()
+
+            # Pass to function that does the encryption
+            enc_NewPass = encrypt_user_pass(request.user.id, password_form.clean().get('password'))
+
+            # Save the UserPass model after validating the form and adding encrypted password.
+            new_pass = password_form.save(commit=False)
+            new_pass.password = enc_NewPass
+            new_pass.save()
+
             return redirect('/painlesspass/pass_entry/' + str(new_pass.pk))
 
     else:
@@ -237,3 +270,16 @@ def pass_delete(request, pass_id):
     context = {"userpass_list": userpass_list,
                "folder_list": folder_list}
     return render(request, "painlessapp/pass_list.html", context)
+
+
+# Overrides a specific function in the login view class that, once a user is authenticated,
+# uses their password to decrypt their general encryption key (GEK) and store it in a cached,
+# volatile memory variable.
+class CustomLoginView(LoginView):
+    def form_valid(self, form):
+        """Security check complete. Log the user in."""
+        auth_login(self.request, form.get_user())
+
+        # Get user password, decrypt GEK, store in volatile cache
+        decrypt_and_store_key(self.request.user, form.clean().get('password'))
+        return HttpResponseRedirect(self.get_success_url())

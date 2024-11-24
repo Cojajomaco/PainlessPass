@@ -16,9 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from painlessapp.views import CustomLoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Overwrite the accounts/login page since it was breaking GEK encryption stuff.
+    path('accounts/login/', CustomLoginView.as_view(), name="login"),
     path('accounts/', include("django.contrib.auth.urls")),
     path('painlesspass/', include('painlessapp.urls')),
 ]

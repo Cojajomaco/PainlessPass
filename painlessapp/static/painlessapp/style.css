@@ -155,3 +155,13 @@ form {
 	height: 40px;
 	background-color: dimgrey;
 }
+
+/* Horizontal scroll bar on table data items */
+.td-horizontal-scroll {
+	max-width: 75px;
+	white-space: nowrap;
+	overflow-y:hidden;
+	overflow-x: scroll;
+}
+
+/*

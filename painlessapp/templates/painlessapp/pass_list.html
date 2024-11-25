@@ -28,11 +28,11 @@
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Username</th>
-                    <th scope="col" style="max-width: 100px;white-space: nowrap;overflow: hidden;">Encrypted Password</th>
+                    <th scope="col" style="max-width: 100px;">Encrypted Password</th>
                     <th scope="col">URI</th>
                     <th scope="col">Folder</th>
                     <th scope="col">Note</th>
-                    <th scope="col">Action</th>
+                    <th scope="col" class="text-center" style="max-width: 35px">Action</th>
                 </tr>
             </thead>
 
@@ -43,13 +43,28 @@
                     <td><a href="/painlesspass/pass_entry/{{ userpass.pk }}">{{ userpass.name }}</a></td>
                     <td>{{ userpass.username }}</td>
                     <!-- Made this one to have a scrollbar to show full encrypted password. -->
-                    <td style="max-width: 100px;
-                        white-space: nowrap; overflow-y:hidden;
-                        overflow-x: scroll;">{{ userpass.password }}</td>
+                    <td class="td-horizontal-scroll">{{ userpass.password }}</td>
                     <td>{{ userpass.uri }}</td>
                     <td>{{ userpass.folder }}</td>
                     <td>{{ userpass.note }}</td>
-                    <td>Action Placeholder</td>
+                    <td class="text-center" style="max-width: 35px">
+                        <!-- Icons for editing and deleting items -->
+                        <ul class="d-flex justify-content-center p-0">
+                            <!-- Edit button -->
+                            <li class="d-inline-block pe-3">
+                                <a href="/painlesspass/pass_entry/{{ userpass.pk }}" title="Edit">
+                                    <i class="bi-pencil-square"></i>
+                                </a>
+                            </li>
+                            <!-- Delete button with confirmation -->
+                            <!-- TODO: Add confirmation lol -->
+                            <li class="d-inline-block">
+                                <a href="/painlesspass/pass_delete/{{ userpass.pk }}" title="Delete">
+                                    <i class="bi-x-square-fill" style="color: crimson;"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

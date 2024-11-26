@@ -10,7 +10,7 @@
 
 {% block content %}
 <div class="main-pass-list"> <!-- div to hold all password objects -->
-    <h2>PainlessPass Pass_List</h2>
+    <h2>Passwords</h2>
 
     <!-- Check if the user has any passwords - prompt for creation if they don't -->
     {% if userpass_list.count == 0 %}
@@ -57,9 +57,8 @@
                                 </a>
                             </li>
                             <!-- Delete button with confirmation -->
-                            <!-- TODO: Add confirmation lol -->
                             <li class="d-inline-block">
-                                <a href="/painlesspass/pass_delete/{{ userpass.pk }}" title="Delete">
+                                <a href="/painlesspass/pass_delete/{{ userpass.pk }}" class="confirm-delete" title="Delete">
                                     <i class="bi-x-square-fill" style="color: crimson;"></i>
                                 </a>
                             </li>

@@ -9,8 +9,7 @@
 {% endblock %}
 
 {% block content %}
-    <h2>PainlessPass Folder_List</h2>
-    <h4>Folders</h4>
+    <h2>Folders</h2>
     <!-- What to do if no folders exist except the default -->
     <div class="user-folder-list">
     {% if userfolder_list.count == 1 %}
@@ -19,17 +18,50 @@
 
 
     {% else %}
-        <ul class="user-folder-list">
-        {% for folder in userfolder_list %}
-            {% if folder.name != "No Folder" %}
-            <li><a class="user-folder-list" href="/painlesspass/folder_entry/{{ folder.pk }}">{{ folder }}</a>
-            <form class="delete-item-form" action="/painlesspass/folder_delete/{{ folder.pk }}">
-                <input type="submit" value="Delete Folder" />
-            </form>
-            </li>
-            {% endif %}
-        {% endfor %}
-        </ul>
+    <!-- The div to hold the table that contains all user folders. Hopefully can use JS to sort this later. -->
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-light">
+                <!-- Table column header -->
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Date Created</th>
+                    <th scope="col">Date Modified</th>
+                    <th scope="col" class="text-center" style="max-width: 35px">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            <!-- Add folders to the table -->
+            {% for folder in userfolder_list %}
+                <!-- Don't want to grab that pesky "No Folder"! -->
+                {% if folder.name != "No Folder" %}
+                <tr>
+                    <td><a href="/painlesspass/folder_entry/{{ folder.pk }}">{{ folder.name }}</a></td>
+                    <td>{{ folder.created_at }}</td>
+                    <td>{{ folder.modified_at }}</td>
+                    <td class="text-center" style="max-width: 35px">
+                        <!-- Icons for editing and deleting items -->
+                        <ul class="d-flex justify-content-center p-0">
+                            <!-- Edit button -->
+                            <li class="d-inline-block pe-3">
+                                <a href="/painlesspass/folder_entry/{{ folder.pk }}" title="Edit">
+                                    <i class="bi-pencil-square"></i>
+                                </a>
+                            </li>
+                            <!-- Delete button with confirmation -->
+                            <li class="d-inline-block">
+                                <a href="/painlesspass/folder_delete/{{ folder.pk }}" class="confirm-delete" title="Delete">
+                                    <i class="bi-x-square-fill" style="color: crimson;"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
     {% endif %}
     </div>
 {% endblock %}

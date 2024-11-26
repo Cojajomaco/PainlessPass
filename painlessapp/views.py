@@ -260,10 +260,7 @@ def folder_delete(request, folder_id):
         pass_change_folders.update(folder=no_folder)
         userfolder_entry.delete()
 
-    userfolder_list = Folder.objects.filter(user_id=request.user)
-
-    context = {"userfolder_list": userfolder_list}
-    return render(request, "painlessapp/folder_list.html", context)
+    return redirect("/painlesspass/folder_list")
 
 
 # Delete password
@@ -280,11 +277,7 @@ def pass_delete(request, pass_id):
     elif userpass_entry.user_id == request.user:
         userpass_entry.delete()
 
-    userpass_list = UserPass.objects.filter(user_id=request.user)
-    folder_list = Folder.objects.filter(user_id=request.user)
-    context = {"userpass_list": userpass_list,
-               "folder_list": folder_list}
-    return render(request, "painlessapp/pass_list.html", context)
+    return redirect("/painlesspass/pass_list")
 
 
 # Overrides a specific function in the login view class that, once a user is authenticated,

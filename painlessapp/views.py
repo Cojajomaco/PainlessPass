@@ -81,9 +81,10 @@ def pass_list(request):
         return redirect("/accounts/login")
     # Filter list to ONLY current user objects.
     userpass_list = UserPass.objects.filter(user_id=request.user)
-    folder_list = Folder.objects.filter(user_id=request.user)
-    context = {"userpass_list": userpass_list,
-               "folder_list": folder_list}
+
+    # Returns passwords by their name to order them.
+    userpass_list = userpass_list.order_by('name')
+    context = {"userpass_list": userpass_list}
 
     return render(request, "painlessapp/pass_list.html", context)
 
@@ -214,6 +215,9 @@ def folder_list(request):
 
     # Filter list to ONLY current user objects.
     userfolder_list = Folder.objects.filter(user_id=request.user)
+
+    # Returns folders by name to order them.
+    userfolder_list = userfolder_list.order_by('name')
     context = {"userfolder_list": userfolder_list}
     return render(request, "painlessapp/folder_list.html", context)
 

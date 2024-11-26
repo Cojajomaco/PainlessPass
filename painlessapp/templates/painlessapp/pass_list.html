@@ -10,18 +10,23 @@
 
 {% block content %}
 <div class="main-pass-list"> <!-- div to hold all password objects -->
-    <h2>Passwords</h2>
 
     <!-- Check if the user has any passwords - prompt for creation if they don't -->
     {% if userpass_list.count == 0 %}
+        <h2>Passwords</h2>
         <p>You have no passwords</p>
         <a href="/painlesspass/pass_new/">Create one?</a>
 
     {% else %}
     <!-- Make a table with all passwords! -->
+    <!-- Div for a button that links to the new password form -->
+    <div class="mx-5 mt-5 mb-3 pb-2 border-bottom border-3">
+        <h2 class="d-inline">Passwords</h2>
+        <a href="/painlesspass/pass_new/" class="btn btn-secondary d-inline float-end">+ Add Item</a>
+    </div>
 
     <!-- The div to hold the table that contains all user passwords. Hopefully can use JS to sort this later. -->
-    <div class="table-responsive">
+    <div class="table-responsive mx-5">
         <table class="table table-striped table-bordered table-hover">
             <thead class="thead-light">
                 <!-- Table column header -->

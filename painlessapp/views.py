@@ -84,7 +84,9 @@ def pass_list(request):
 
     # Returns passwords by their name to order them.
     userpass_list = userpass_list.order_by('name')
-    context = {"userpass_list": userpass_list}
+    userfolder_list = Folder.objects.filter(user_id=request.user)
+    context = {"userpass_list": userpass_list,
+               "userfolder_list": userfolder_list}
 
     return render(request, "painlessapp/pass_list.html", context)
 

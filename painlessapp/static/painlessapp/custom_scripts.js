@@ -12,3 +12,21 @@ const confirmDeleteButtons = document.querySelectorAll(".confirm-delete");
 confirmDeleteButtons.forEach(button => {
   button.addEventListener("click", confirmDelete);
 });
+
+$(document).ready(function() {
+    if($('#folderChoice')) {
+        $("#folderChoice").change(function () {
+            var selectedValue = $(this).val();
+
+            $("#passTable tbody tr").each(function () {
+                var columnValue = $(this).find("td:nth-child(5)").text(); // Assuming the column to filter is the second one
+
+                if (selectedValue === "" || columnValue === selectedValue) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+    }
+});

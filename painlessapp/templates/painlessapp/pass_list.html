@@ -18,16 +18,33 @@
         <a href="/painlesspass/pass_new/">Create one?</a>
 
     {% else %}
-    <!-- Make a table with all passwords! -->
-    <!-- Div for a button that links to the new password form -->
+
+    <!-- Div for table header that links to the new password form, search, filter -->
     <div class="mx-5 mt-5 mb-3 pb-2 border-bottom border-3">
         <h2 class="d-inline">Passwords</h2>
-        <a href="/painlesspass/pass_new/" class="btn btn-secondary d-inline float-end">+ Add Item</a>
-    </div>
 
+        <!-- Button for adding new passwords -->
+        <a href="/painlesspass/pass_new/" class="btn btn-secondary d-inline float-end">+ Add Item</a>
+
+        <!-- Search bar for additional filtering! -->
+        <input class="float-end me-5 mt-2 h-50" type="text" id="searchFilter" placeholder="Search...">
+
+        <!-- Folder filter dropdown selection -->
+        <div class="float-end me-5 mt-2">
+            <label for="folderChoice" class="">Folder: </label>
+            <select id="folderChoice" class="">
+              <option value="">All</option>
+            {% for folder in userfolder_list %}
+              <option value="{{ folder }}">{{ folder }}</option>
+            {% endfor %}
+            </select>
+        </div>
+
+    </div>
+    <!-- Make a table with all passwords! -->
     <!-- The div to hold the table that contains all user passwords. Hopefully can use JS to sort this later. -->
     <div class="table-responsive mx-5">
-        <table class="table table-striped table-bordered table-hover">
+        <table id="passTable" class="table table-striped table-bordered table-hover">
             <thead class="thead-light">
                 <!-- Table column header -->
                 <tr>

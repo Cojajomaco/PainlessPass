@@ -1,4 +1,4 @@
-{% extends "base_generic.html" %}
+{% extends "base_accounts.html" %}
 
 {% block title %}
     <title>PainlessPass - Register</title>
@@ -6,19 +6,43 @@
 
 {% block content %}
     <!-- Register Form -->
-    <div class="d-flex justify-content-center align-items-center max-height">
-        <div class="border border-4 rounded-3 border-secondary p-3">
-            <div id="register-header" class="text-center">
-                <h2>Create an Account</h2>
+    <div class="d-flex justify-content-center align-items-center mt-5">
+        <div class="border border-4 rounded-3 border-secondary p-5">
+            <div id="register-header" class="text-center mb-4">
+                <h2>Create Account</h2>
             </div>
+            <!-- Error Checking -->
+            {% if register_form.errors %}
+                <div class="text-center alert alert-danger p-1">
+                {% if register_form.errors.username %}
+                    <p class="m-0">Username taken.</p>
+                {% endif %}
+                {% if register_form.errors.password2 %}
+                    <p class="m-0">Passwords do not match.</p>
+                {% endif %}
+                    <p class="m-0">Please try again.</p>
+                </div>
+            {% endif %}
         <div class="align-items-start">
             <form method="POST" class="content-form">
                 {% csrf_token %}
-                {{ register_form.as_p }}
-                <button type="submit" class="form-button">Register</button>
+                <div class="mb-4">
+                    <p class="mb-0">Username:</p>
+                    {{ register_form.username }}
+                </div>
+                <div class="mb-4">
+                    <p class="mb-0">Password:</p>
+                    {{ register_form.password1 }}
+                </div>
+
+                <div class="mb-4">
+                    <p class="mb-0">Confirm Password:</p>
+                    {{ register_form.password2 }}
+                </div>
+                <button type="submit" class="btn btn-secondary w-100 mb-4">Register</button>
             </form>
         </div>
-        <p id="account-redirect">Already have an account? <a href="/painlesspass/login">Sign in here.</a></p>
+        <p id="account-redirect">Already a member? <a href="/painlesspass/login">Sign in.</a></p>
         </div>
     </div>
 {% endblock %}

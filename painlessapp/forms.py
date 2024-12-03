@@ -72,3 +72,5 @@ class NewFolderForm(forms.ModelForm):
     # Restrict the "folder" field to folders only available to the user.
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+

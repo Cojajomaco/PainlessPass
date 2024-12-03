@@ -1,15 +1,31 @@
-{% extends "base_generic.html" %}
+{% extends "base_accounts.html" %}
 
 {% block title %}
     <title>PainlessPass - Signin</title>
 {% endblock %}
 
 {% block content %}
-    <h1>Log In</h1>
-        <form method="POST" class="content-form">
-            {% csrf_token %}
-            {{ form }}
-            <button type="submit">Log In</button>
-        </form>
-    <p>No account? <a href="/painlesspass/register">Sign up here.</a></p>
+    <!-- Sign-in Form -->
+    <div class="d-flex justify-content-center align-items-center max-height mt-5">
+        <div class="border border-4 rounded-3 border-secondary p-5">
+            <div id="login-header" class="text-center mb-4">
+                <h1>Log In</h1>
+            </div>
+                <form method="POST" class="form-sigin">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <p>Username:</p>
+                        {{ form.username }}
+                    </div>
+                    <div class="mb-4">
+                        <p>Password:</p>
+                        {{ form.password }}
+                    </div>
+                    <button type="submit" class="btn btn-secondary w-100 mb-4">Log In</button>
+                </form>
+            <div id="account-prompt">
+            </div>
+            <p>No account? <a href="/painlesspass/register">Sign up here.</a></p>
+        </div>
+    </div>
 {% endblock %}

@@ -18,7 +18,9 @@
                     <p class="m-0">Username taken.</p>
                 {% endif %}
                 {% if register_form.errors.password2 %}
-                    <p class="m-0">Passwords do not match.</p>
+                    <p class="m-0">Passwords must:</p>
+                    <p class="m-0">- be complex</p>
+                    <p class="m-0">- match</p>
                 {% endif %}
                     <p class="m-0">Please try again.</p>
                 </div>

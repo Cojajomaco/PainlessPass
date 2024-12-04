@@ -1,6 +1,8 @@
 # Upon this rock, I will build my church.
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
+
 from .models import UserPass, Folder
 
 
@@ -8,6 +10,7 @@ from .models import UserPass, Folder
 # The reason for using the actual code is for better customization and possible tie-in to the
 # extended user model of the PainlessPass app.
 class RegistrationForm(forms.ModelForm):
+    # Error message after comparing passwords; we want to make sure both fields match!
     error_messages = {
         'password_mismatch': "The two password fields didn't match.",
     }
@@ -29,6 +32,8 @@ class RegistrationForm(forms.ModelForm):
                 self.error_messages['password_mismatch'],
                 code='password_mismatch',
             )
+        # Check password for complexity requirements
+        validate_password(password2)
         return password2
 
     def save(self, commit=True):

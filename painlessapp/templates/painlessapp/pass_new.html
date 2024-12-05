@@ -9,17 +9,47 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Enter New Password</h2>
-    <a class="body-back-button" href="/painlesspass/pass_list">Back</a>
-    <form method="POST" class="content-form">
-        {% csrf_token %}
-        {{ password_form.as_p }}
-        <!-- TODO: Make pretty field by iterating and coupling with bootstrap -->
-        {% comment %}
-        {% for field in password_form %}
-        {{ field.name }}
-        {% endfor %}
-        {% endcomment %}
-        <button type="submit" class="form-button">Create</button>
-    </form>
+    <!-- New Password Form -->
+    <div class="d-flex justify-content-center align-items-center mt-5">
+        <div class="border border-4 rounded-3 border-secondary p-5">
+            <!-- Title -->
+            <div id="login-header" class="text-center mb-4">
+                <h1>New Password</h1>
+            </div>
+            {% if password_form.errors.name %}
+                <div class="text-center alert alert-danger p-1">
+                    {{ password_form.errors }}
+                </div>
+            {% endif %}
+            <!-- The actual form, made BEAUTIFUL by bootstrap -->
+            <form method="POST">
+                {% csrf_token %}
+                    <div class="mb-4">
+                        <p class="mb-0">Name:</p>
+                        {{ password_form.name }}
+                    </div>
+                    <div class="mb-4">
+                        <p class="mb-0">Username:</p>
+                        {{ password_form.username }}
+                    </div>
+                    <div class="mb-4">
+                        <p class="mb-0">Password:</p>
+                        {{ password_form.password }}
+                    </div>
+                    <div class="mb-4">
+                        <p class="mb-0">URI:</p>
+                        {{ password_form.uri }}
+                    </div>
+                    <div class="mb-4">
+                        <p class="mb-0">Folder:</p>
+                        {{ password_form.folder }}
+                    </div>
+                    <div class="mb-4">
+                        <p class="mb-0">Note:</p>
+                        {{ password_form.note }}
+                    </div>
+                <button type="submit" class="btn btn-secondary w-100 form-button">Create</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

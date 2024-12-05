@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block title %}
-    <title>PainlessPass - Folder_Entry</title>
+    <title>PainlessPass - {{ userfolder_entry.name }} Folder</title>
 {% endblock %}
 
 {% block content_header %}
@@ -9,11 +9,40 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Folder Entry</h2>
-    <a class="body-back-button" href="/painlesspass/folder_list">Back</a>
-    <ul>
-        <li>Folder Name: {{ userfolder_entry.name }}</li>
-        <li>Date Created: {{ userfolder_entry.created_at }}</li>
-        <li>Date Modified: {{ userfolder_entry.modified_at }}</li>
-    </ul>
+    <!-- Folder Form -->
+    <div class="d-flex justify-content-center align-items-center mt-5">
+        <div class="border border-4 rounded-3 border-secondary px-5 pt-3 pb-5">
+            <!-- The back button -->
+            <a class="body-back-button" href="/painlesspass/folder_list">
+                <i class="bi-arrow-left h3 text-secondary" title="Return to folder list"></i>
+            </a>
+            <a href="/painlesspass/folder_delete/{{ userfolder_entry.pk }}" class="confirm-delete float-end h5 pt-1" title="Delete">
+                <i class="bi-trash3-fill" style="color: crimson;"></i>
+            </a>
+            <!-- Title and errors -->
+            <div id="login-header" class="text-center mb-4">
+            <h1>{{ userfolder_entry.name }}</h1>
+            </div>
+            {% if userfolder_form.errors.name %}
+                <div class="text-center alert alert-danger p-1">
+                {% for field in userfolder_form.errors.name %}
+                    {{ field }}
+                {% endfor %}
+                </div>
+            {% endif %}
+            <!-- The actual form -->
+            <form method="POST">
+                {% csrf_token %}
+                    <div class="mb-4">
+                        <p class="mb-0">Name:</p>
+                        {{ userfolder_form.name }}
+                    </div>
+                        <ul class="list-group mb-4">
+                            <li class="list-group-item">Date Created: {{ userfolder_entry.created_at }}</li>
+                            <li class="list-group-item">Date Modified: {{ userfolder_entry.modified_at }}</li>
+                        </ul>
+                <button type="submit" class="btn btn-secondary w-100 form-button">Edit</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

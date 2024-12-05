@@ -64,6 +64,11 @@ class NewPasswordForm(forms.ModelForm):
 
 # Form for creating new folder items.
 class NewFolderForm(forms.ModelForm):
+    # Error messages for No Folder match case...
+    error_messages = {
+        'nofolder_constraint': "The folder cannot be titled 'No Folder'.",
+    }
+
     class Meta:
         model = Folder
         fields = ["name", ]

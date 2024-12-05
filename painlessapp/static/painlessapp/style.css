@@ -164,4 +164,39 @@ form {
 	overflow-x: scroll;
 }
 
-/*
+/* Django form customization */
+/* Login and Registration */
+#id_username {
+	width: 100%;
+}
+
+/* Just registration */
+#id_password1 {
+	width: 100%;
+}
+
+#id_password2 {
+	width: 100%;
+}
+
+/* Just login */
+#id_password {
+	width: 100%;
+}
+
+/* Other forms */
+#id_name {
+	width: 100%;
+}
+
+#id_uri {
+	width: 100%;
+}
+
+#id_folder {
+	width: 100%;
+}
+
+#id_note {
+	width: 100%;
+}

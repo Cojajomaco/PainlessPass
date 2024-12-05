@@ -11,14 +11,6 @@
 {% block content %}
 <div class="main-pass-list"> <!-- div to hold all password objects -->
 
-    <!-- Check if the user has any passwords - prompt for creation if they don't -->
-    {% if userpass_list.count == 0 %}
-        <h2>Passwords</h2>
-        <p>You have no passwords</p>
-        <a href="/painlesspass/pass_new/">Create one?</a>
-
-    {% else %}
-
     <!-- Div for table header that links to the new password form, search, filter -->
     <div class="mx-5 mt-5 mb-3 pb-2 border-bottom border-3">
         <h2 class="d-inline">Passwords</h2>
@@ -42,6 +34,17 @@
         </div>
 
     </div>
+
+    <!-- Check if the user has any passwords - prompt for creation if they don't -->
+    {% if userpass_list.count == 0 %}
+        <div class="mt-5 text-center">
+            <i class="bi-wind h1"></i>
+            <p class="mt-3">You have no passwords.</p>
+            <!-- Button for adding new passwords -->
+            <a href="/painlesspass/pass_new/" class="btn btn-secondary d-inline">Create Password</a>
+        </div>
+
+    {% else %}
     <!-- Make a table with all passwords! -->
     <!-- The div to hold the table that contains all user passwords. Hopefully can use JS to sort this later. -->
     <div class="table-responsive mx-5">
@@ -82,7 +85,7 @@
                             <!-- Delete button with confirmation -->
                             <li class="d-inline-block">
                                 <a href="/painlesspass/pass_delete/{{ userpass.pk }}" class="confirm-delete" title="Delete">
-                                    <i class="bi-x-square-fill" style="color: crimson;"></i>
+                                    <i class="bi-trash3-fill" style="color: crimson;"></i>
                                 </a>
                             </li>
                         </ul>
@@ -92,7 +95,6 @@
             </tbody>
         </table>
     </div>
-
-{% endif %}
+    {% endif %}
 </div>
 {% endblock %}

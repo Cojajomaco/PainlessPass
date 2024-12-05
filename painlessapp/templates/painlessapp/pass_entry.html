@@ -10,16 +10,61 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Password Entry</h2>
-    <a class="body-back-button" href="/painlesspass/pass_list">Back</a>
-    <ul>
-        <li>Password Name: {{ userpass_entry.name }}</li>
-        <li>Username: {{ userpass_entry.username }}</li>
-        <li>Password: {{ userpass_entry.password }}</li>
-        <li>URI: {{ userpass_entry.uri }}</li>
-        <li>Folder: {{ userpass_entry.folder }}</li>
-        <li>Note: {{ userpass_entry.note }}</li>
-        <li>Date Created: {{ userpass_entry.created_at }}</li>
-        <li>Date Modified: {{ userpass_entry.modified_at }}</li>
-    </ul>
+    <!-- Password Form -->
+    <div class="d-flex justify-content-center align-items-center mt-5 pb-4">
+        <div class="border border-4 rounded-3 border-secondary px-5 pt-3 pb-5">
+            <!-- The back button -->
+            <a class="body-back-button" href="/painlesspass/pass_list">
+                <i class="bi-arrow-left h3 text-secondary" title="Return to password list"></i>
+            </a>
+            <a href="/painlesspass/pass_delete/{{ userpass_entry.pk }}" class="confirm-delete float-end h5 pt-1"
+                                                                                                title="Delete">
+                <i class="bi-trash3-fill" style="color: crimson;"></i>
+            </a>
+            <!-- Title and errors -->
+            <div id="login-header" class="text-center mb-4">
+            <h1>{{ userpass_entry.name }}</h1>
+            </div>
+            {% if userpass_form.errors.name %}
+                <div class="text-center alert alert-danger p-1">
+                {% for field in userpass_form.errors.name %}
+                    {{ field }}
+                {% endfor %}
+                </div>
+            {% endif %}
+            <!-- The actual form -->
+            <form method="POST">
+                {% csrf_token %}
+                    <div class="mb-4">
+                        <p class="mb-0">Name:</p>
+                        {{ userpass_form.name }}
+                    </div>
+                    <div class="mb-4">
+                        <p class="mb-0">Username:</p>
+                        {{ userpass_form.username }}
+                    </div>
+                    <div class="mb-4">
+                        <p class="mb-0">Password:</p>
+                        {{ userpass_form.password }}
+                    </div>
+                    <div class="mb-4">
+                        <p class="mb-0">URI:</p>
+                        {{ userpass_form.uri }}
+                    </div>
+                    <div class="mb-4">
+                        <p class="mb-0">Folder:</p>
+                        {{ userpass_form.folder }}
+                    </div>
+                    <div class="mb-4">
+                        <p class="mb-0">Note:</p>
+                        {{ userpass_form.note }}
+                    </div>
+                        <ul class="list-group mb-4">
+                            <li class="list-group-item">Date Created: {{ userpass_entry.created_at }}</li>
+                            <li class="list-group-item">Date Modified: {{ userpass_entry.modified_at }}</li>
+                        </ul>
+                <button type="submit" class="btn btn-secondary w-100 form-button">Edit</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

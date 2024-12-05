@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -110,13 +110,37 @@ def pass_entry(request, pass_id):
         logout(request)
         return redirect('/painlesspass/login/')
 
-    # Make sure user can access the pass_id
-    userpass_entry = UserPass.objects.get(pk=pass_id, user_id=request.user)
+    # Make sure user can access the pass_id; 404 if not available
+    userpass_entry = get_object_or_404(UserPass, pk=pass_id, user_id=request.user)
     userpass_entry.password = decrypt_user_pass(request.user.id, userpass_entry.password)
     if userpass_entry.user_id != request.user:
         return HttpResponse('Unauthorized', status=401)
+
+    password_form = NewPasswordForm(user_id=request.user, instance=userpass_entry)
+
+    if request.method == 'POST':
+        print("hit post")
+        # Create the form object to validate data
+        password_form = NewPasswordForm(request.POST, user_id=request.user, instance=userpass_entry)
+        if password_form.is_valid():
+            print("hit validation")
+            # Pass to function that does the encryption
+            enc_NewPass = encrypt_user_pass(request.user.id, password_form.clean().get('password'))
+
+            # Save the UserPass model after validating the form and adding encrypted password.
+            new_pass = password_form.save(commit=False)
+            print(new_pass)
+            new_pass.password = enc_NewPass
+            print(new_pass)
+            new_pass.save()
+            print("save")
+
+            return redirect('/painlesspass/pass_entry/' + str(new_pass.pk))
+
+
     context = {
         "userpass_entry": userpass_entry,
+        "userpass_form": password_form,
     }
     return render(request, "painlessapp/pass_entry.html", context)
 
@@ -231,16 +255,42 @@ def folder_entry(request, folder_id):
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
 
-    # TODO: Customize timezones based on a Settings model which stores timezones
-    timezone.activate('America/Chicago')
-
-    # Make sure user can access the folder
-    userfolder_entry = Folder.objects.get(pk=folder_id, user_id=request.user)
+    # Make sure user can access the folder; 404 if not available
+    userfolder_entry = get_object_or_404(Folder, pk=folder_id, user_id=request.user)
     if userfolder_entry.user_id != request.user:
         return HttpResponse('Unauthorized', status=401)
 
+    # TODO: Customize timezones based on a Settings model which stores timezones
+    timezone.activate('America/Chicago')
+
+    # Form with the object data
+    userfolder_form = NewFolderForm(instance=userfolder_entry)
+
+    # Handling processing for an edit request to the Folder data
+    if request.method == 'POST':
+        # Create the form object to validate data
+        userfolder_form = NewFolderForm(request.POST, instance=userfolder_entry)
+        if userfolder_form.is_valid():
+
+            # Form Error Cases
+            # Saving cleaned name for use in error checks
+            new_folder_name = userfolder_form.cleaned_data['name']
+            # Prevent naming folder "No Folder"
+            if new_folder_name == "No Folder":
+                userfolder_form.add_error('name', 'The folder cannot be titled "No Folder".')
+
+            # Checking for a folder that violates unique name per user Folder model constraint
+            if Folder.objects.filter(name=new_folder_name, user_id=request.user).exists():
+                userfolder_form.add_error('name', 'A folder already exists with that name.')
+
+            # Verify there are no errors in the form, then save and return a successful page
+            if len(userfolder_form.errors) == 0:
+                new_folder = userfolder_form.save()
+                return redirect('/painlesspass/folder_entry/' + str(new_folder.pk))
+
     context = {
         "userfolder_entry": userfolder_entry,
+        "userfolder_form": userfolder_form,
     }
     return render(request, "painlessapp/folder_entry.html", context)
 

@@ -11,9 +11,13 @@
 {% block content %}
     <!-- New Folder Form -->
     <div class="d-flex justify-content-center align-items-center mt-5">
-        <div class="border border-4 rounded-3 border-secondary p-5">
-            <!-- Title and errors -->
-            <div id="login-header" class="text-center mb-4">
+        <div class="border border-4 rounded-3 border-secondary px-5 pt-3 pb-5">
+            <!-- The back button -->
+            <a class="body-back-button" href="/painlesspass/folder_list">
+                <i class="bi-arrow-left h3 text-secondary" title="Return to folder list"></i>
+            </a>
+            <!-- Title and Errors -->
+            <div id="login-header" class="text-center mt-2 mb-4">
                 <h1>New Folder</h1>
             </div>
             {% if folder_form.errors.name %}

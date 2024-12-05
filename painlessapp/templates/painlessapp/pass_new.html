@@ -11,9 +11,13 @@
 {% block content %}
     <!-- New Password Form -->
     <div class="d-flex justify-content-center align-items-center mt-5">
-        <div class="border border-4 rounded-3 border-secondary p-5">
+        <div class="border border-4 rounded-3 border-secondary px-5 pt-3 pb-5">
+            <!-- The back button -->
+            <a class="body-back-button" href="/painlesspass/pass_list">
+                <i class="bi-arrow-left h3 text-secondary" title="Return to password list"></i>
+            </a>
             <!-- Title -->
-            <div id="login-header" class="text-center mb-4">
+            <div id="login-header" class="text-center mt-2 mb-4">
                 <h1>New Password</h1>
             </div>
             {% if password_form.errors.name %}
@@ -33,7 +37,9 @@
                         {{ password_form.username }}
                     </div>
                     <div class="mb-4">
-                        <p class="mb-0">Password:</p>
+                        <p class="mb-0">Password:
+                            <i role="button" class="bi bi-eye-slash-fill float-end" id="pass-toggle"></i>
+                        </p>
                         {{ password_form.password }}
                     </div>
                     <div class="mb-4">

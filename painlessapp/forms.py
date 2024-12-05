@@ -49,6 +49,9 @@ class NewPasswordForm(forms.ModelForm):
     class Meta:
         model = UserPass
         fields = ["name", "username", "password", "uri", "folder", "note", ]
+        widgets = {
+            'password': forms.TextInput(attrs={'type': 'password'}),
+        }
 
     # Restrict the "folder" field to folders only available to the user.
     def __init__(self, *args, **kwargs):
@@ -78,9 +81,3 @@ class NewFolderForm(forms.ModelForm):
 
         if self.cleaned_data['name'] == 'No Folder':
             self.add_error('name', 'The folder cannot be titled "No Folder".')
-
-    # Restrict the "folder" field to folders only available to the user.
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-

@@ -73,4 +73,20 @@ $(document).ready(function() {
             });
         });
     }
+    /* Toggles password field visibility based on pressing an icon above the field */
+    /* Made with help from Google AI */
+    if($('#pass-toggle')) {
+        const inputField = document.getElementById("id_password");
+        const toggleIcon = document.getElementById("pass-toggle");
+
+        toggleIcon.addEventListener("click", function() {
+            if (inputField.type === "password") {
+                inputField.type = "text";
+                toggleIcon.className = "bi bi-eye-fill float-end"; // Change to a different eye icon
+            } else {
+                inputField.type = "password";
+                toggleIcon.className = "bi bi-eye-slash-fill float-end";
+            }
+        });
+    }
 });

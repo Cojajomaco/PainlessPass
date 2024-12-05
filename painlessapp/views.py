@@ -119,21 +119,16 @@ def pass_entry(request, pass_id):
     password_form = NewPasswordForm(user_id=request.user, instance=userpass_entry)
 
     if request.method == 'POST':
-        print("hit post")
         # Create the form object to validate data
         password_form = NewPasswordForm(request.POST, user_id=request.user, instance=userpass_entry)
         if password_form.is_valid():
-            print("hit validation")
             # Pass to function that does the encryption
             enc_NewPass = encrypt_user_pass(request.user.id, password_form.clean().get('password'))
 
             # Save the UserPass model after validating the form and adding encrypted password.
             new_pass = password_form.save(commit=False)
-            print(new_pass)
             new_pass.password = enc_NewPass
-            print(new_pass)
             new_pass.save()
-            print("save")
 
             return redirect('/painlesspass/pass_entry/' + str(new_pass.pk))
 

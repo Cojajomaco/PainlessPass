@@ -1,6 +1,7 @@
 {% extends "base_generic.html" %}
 {% load tz %}
 
+
 {% block title %}
     <title>PainlessPass - Pass_Entry</title>
 {% endblock %}
@@ -11,8 +12,10 @@
 
 {% block content %}
     <!-- Password Form -->
-    <div class="d-flex justify-content-center align-items-center mt-5 pb-4">
-        <div class="border border-4 rounded-3 border-secondary px-5 pt-3 pb-5">
+    <div class="d-flex justify-content-center align-items-center mt-5 pb-4 overflow-hidden">
+        <div class="border border-4 rounded-3 border-secondary m-5 px-5 pt-3 pb-5 overflow-hidden"
+             style="max-width: 40%">
+
             <!-- The back button -->
             <a class="body-back-button" href="/painlesspass/pass_list">
                 <i class="bi-arrow-left h3 text-secondary" title="Return to password list"></i>
@@ -21,17 +24,25 @@
                                                                                                 title="Delete">
                 <i class="bi-trash3-fill" style="color: crimson;"></i>
             </a>
+
             <!-- Title and errors -->
             <div id="login-header" class="text-center mb-4">
-            <h1>{{ userpass_entry.name }}</h1>
+            <h1 style="overflow: hidden; text-overflow: ellipsis;">{{ userpass_entry.name }}</h1>
             </div>
             {% if userpass_form.errors.name %}
-                <div class="text-center alert alert-danger p-1">
+                <div class="text-center alert alert-danger p-3">
                 {% for field in userpass_form.errors.name %}
                     {{ field }}
                 {% endfor %}
                 </div>
+
+            <!-- Successfully updated message -->
+            {% elif entry_updated == True %}
+                <div class="text-center alert alert-success pb-0">
+                    <p>Password updated successfully.</p>
+                </div>
             {% endif %}
+
             <!-- The actual form -->
             <form method="POST">
                 {% csrf_token %}
@@ -61,7 +72,7 @@
                         <p class="mb-0">Note:</p>
                         {{ userpass_form.note }}
                     </div>
-                        <ul class="list-group mb-4">
+                        <ul class="text-center list-group mb-4">
                             <li class="list-group-item">Date Created: {{ userpass_entry.created_at }}</li>
                             <li class="list-group-item">Date Modified: {{ userpass_entry.modified_at }}</li>
                         </ul>

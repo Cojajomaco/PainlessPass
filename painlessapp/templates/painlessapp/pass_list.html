@@ -12,21 +12,22 @@
 <div class="main-pass-list"> <!-- div to hold all password objects -->
 
     <!-- Div for table header that links to the new password form, search, filter -->
-    <div class="mx-5 mt-5 mb-3 pb-2 border-bottom border-3">
+    <div class="mx-5 mt-5 mb-3 pb-2 border-bottom border-3" style="min-width: 750px;">
         <h2 class="d-inline">Passwords</h2>
 
         <!-- Button for adding new passwords -->
         <a href="/painlesspass/pass_new/" class="btn btn-secondary d-inline float-end">+ Add Item</a>
 
         <!-- Search bar for additional filtering! -->
-        <label for="searchFilter"></label>
-        <input id="passSearch" class="float-end me-5 mt-2 h-50" type="text" id="searchFilter" placeholder="Search...">
+        <label for="passSearch"></label>
+        <input id="passSearch" class="float-end me-5 mt-2 h-50" type="text" placeholder="Search...">
 
         <!-- Folder filter dropdown selection -->
         <div class="float-end me-5 mt-2">
             <label for="folderChoice" class="">Folder: </label>
-            <select id="folderChoice" class="">
-              <option value="">All</option>
+            <select id="folderChoice" class="overflow-hidden"
+                    style="text-overflow: ellipsis; width: 140px;">
+              <option style="" value="">All</option>
             {% for folder in userfolder_list %}
               <option value="{{ folder }}">{{ folder }}</option>
             {% endfor %}
@@ -54,11 +55,11 @@
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Username</th>
-                    <th scope="col" style="max-width: 100px;">Encrypted Password</th>
+                    <th scope="col">Encrypted Password</th>
                     <th scope="col">URI</th>
                     <th scope="col">Folder</th>
                     <th scope="col">Note</th>
-                    <th scope="col" class="text-center" style="max-width: 35px">Action</th>
+                    <th scope="col" class="text-center" style="width: 95px;">Action</th>
                 </tr>
             </thead>
 
@@ -66,14 +67,14 @@
             <!-- Add passwords to the table -->
             {% for userpass in userpass_list %}
                 <tr>
-                    <td><a href="/painlesspass/pass_entry/{{ userpass.pk }}">{{ userpass.name }}</a></td>
-                    <td>{{ userpass.username }}</td>
+                    <td class="table-column-fixed"><a href="/painlesspass/pass_entry/{{ userpass.pk }}">{{ userpass.name }}</a></td>
+                    <td class="table-column-fixed">{{ userpass.username }}</td>
                     <!-- Made this one to have a scrollbar to show full encrypted password. -->
                     <td class="td-horizontal-scroll">{{ userpass.password }}</td>
-                    <td>{{ userpass.uri }}</td>
-                    <td>{{ userpass.folder }}</td>
-                    <td>{{ userpass.note }}</td>
-                    <td class="text-center" style="max-width: 35px">
+                    <td class="table-column-fixed">{{ userpass.uri }}</td>
+                    <td class="table-column-fixed">{{ userpass.folder }}</td>
+                    <td class="table-column-fixed">{{ userpass.note }}</td>
+                    <td class="text-center" style="width: 95px;">
                         <!-- Icons for editing and deleting items -->
                         <ul class="d-flex justify-content-center p-0">
                             <!-- Edit button -->

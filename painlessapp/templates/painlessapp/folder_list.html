@@ -1,4 +1,5 @@
 {% extends "base_generic.html" %}
+{% load tz %}
 
 {% block title %}
     <title>PainlessPass - Folders</title>
@@ -35,7 +36,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">Date Created</th>
                     <th scope="col">Date Modified</th>
-                    <th scope="col" class="text-center" style="max-width: 35px">Action</th>
+                    <th scope="col" class="text-center" style="width: 95px;">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,10 +45,10 @@
                 <!-- Don't want to grab that pesky "No Folder"! -->
                 {% if folder.name != "No Folder" %}
                 <tr>
-                    <td><a href="/painlesspass/folder_entry/{{ folder.pk }}">{{ folder.name }}</a></td>
-                    <td>{{ folder.created_at }}</td>
-                    <td>{{ folder.modified_at }}</td>
-                    <td class="text-center" style="max-width: 35px">
+                    <td class="table-column-fixed"><a href="/painlesspass/folder_entry/{{ folder.pk }}">{{ folder.name }}</a></td>
+                    <td class="table-column-fixed">{{ folder.created_at }}</td>
+                    <td class="table-column-fixed">{{ folder.modified_at }}</td>
+                    <td class="text-center" style="width: 95px;">
                         <!-- Icons for editing and deleting items -->
                         <ul class="d-flex justify-content-center p-0">
                             <!-- Edit button -->

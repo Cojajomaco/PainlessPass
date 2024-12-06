@@ -1,9 +1,32 @@
 {% extends "base_generic.html" %}
+{% load static %}
 
 {% block title %}
     <title>PainlessPass - Home</title>
 {% endblock %}
 
 {% block content %}
-    <p>PainlessPass Home</p>
+    <div class="pt-5 px-5 pb-0 mt-5 mx-5 mb-0 text-center border-bottom">
+        <h1 class="display-4 fw-bold" style="color: #404040;">Simple Password Management</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">PainlessPass is a simple password manager that will store your passwords encrypted for you.
+                <br>Search, filter, and view your passwords with ease.
+                <br>**Currently in Beta.</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+                <a href="/painlesspass/login/">
+                    <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Log In</button>
+                </a>
+                <a href="/painlesspass/register/">
+                    <button type="button" class="btn btn-secondary btn-lg px-4">Sign Up</button>
+                </a>
+            </div>
+        </div>
+        <div class="overflow-hidden" style="max-height: 75%;">
+            <div class="container px-2">
+                <img src="{% static 'painlessapp/images/painless-pass-preview.png' %}"
+                     class="img-fluid border rounded-3 shadow-lg mb-4" alt="PainlessPass Example"
+                     width="1069" height="436" loading="lazy">
+            </div>
+        </div>
+    </div>
 {% endblock %}

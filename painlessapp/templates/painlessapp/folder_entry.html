@@ -10,8 +10,10 @@
 
 {% block content %}
     <!-- Folder Form -->
-    <div class="d-flex justify-content-center align-items-center mt-5">
-        <div class="border border-4 rounded-3 border-secondary px-5 pt-3 pb-5">
+    <div class="d-flex justify-content-center align-items-center mt-5 pb-4 overflow-hidden">
+        <div class="border border-4 rounded-3 border-secondary m-5 px-5 pt-3 pb-5 overflow-hidden"
+        style="max-width: 40%;">
+
             <!-- The back button -->
             <a class="body-back-button" href="/painlesspass/folder_list">
                 <i class="bi-arrow-left h3 text-secondary" title="Return to folder list"></i>
@@ -19,17 +21,27 @@
             <a href="/painlesspass/folder_delete/{{ userfolder_entry.pk }}" class="confirm-delete float-end h5 pt-1" title="Delete">
                 <i class="bi-trash3-fill" style="color: crimson;"></i>
             </a>
-            <!-- Title and errors -->
+
+            <!-- Title -->
             <div id="login-header" class="text-center mb-4">
-            <h1>{{ userfolder_entry.name }}</h1>
+            <h1 style="overflow: hidden; text-overflow: ellipsis;">{{ userfolder_entry.name }}</h1>
             </div>
+
+            <!-- Errors -->
             {% if userfolder_form.errors.name %}
-                <div class="text-center alert alert-danger p-1">
+                <div class="text-center alert alert-danger p-3">
                 {% for field in userfolder_form.errors.name %}
                     {{ field }}
                 {% endfor %}
                 </div>
+
+            <!-- Successfully updated message -->
+            {% elif entry_updated == True %}
+                <div class="text-center alert alert-success pb-0">
+                    <p>Password updated successfully.</p>
+                </div>
             {% endif %}
+
             <!-- The actual form -->
             <form method="POST">
                 {% csrf_token %}
@@ -37,7 +49,7 @@
                         <p class="mb-0">Name:</p>
                         {{ userfolder_form.name }}
                     </div>
-                        <ul class="list-group mb-4">
+                        <ul class="text-center list-group mb-4">
                             <li class="list-group-item">Date Created: {{ userfolder_entry.created_at }}</li>
                             <li class="list-group-item">Date Modified: {{ userfolder_entry.modified_at }}</li>
                         </ul>

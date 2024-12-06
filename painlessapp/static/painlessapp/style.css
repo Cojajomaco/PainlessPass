@@ -200,3 +200,9 @@ form {
 #id_note {
 	width: 100%;
 }
+
+.table-column-fixed {
+	overflow: hidden;
+	max-width: 150px;
+	word-wrap: break-word;
+}

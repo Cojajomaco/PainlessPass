@@ -102,6 +102,9 @@ def pass_entry(request, pass_id):
     # TODO: Customize timezones based on a Settings model which stores timezones
     timezone.activate('America/Chicago')
 
+    # Lets the view know that the entry was not updated yet; POST statement resolves this to True if needed
+    entry_updated = False
+
     # Grab user GEK for potential use in FKEY generation for encryption
     user_GEK = cache.get(str(request.user) + "-GEK")
 
@@ -130,12 +133,14 @@ def pass_entry(request, pass_id):
             new_pass.password = enc_NewPass
             new_pass.save()
 
-            return redirect('/painlesspass/pass_entry/' + str(new_pass.pk))
+            # Lets the view know that the entry was updated
+            entry_updated = True
 
 
     context = {
         "userpass_entry": userpass_entry,
         "userpass_form": password_form,
+        "entry_updated": entry_updated,
     }
     return render(request, "painlessapp/pass_entry.html", context)
 
@@ -234,6 +239,9 @@ def folder_list(request):
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
 
+    # TODO: Customize timezones based on a Settings model which stores timezones
+    timezone.activate('America/Chicago')
+
     # Filter list to ONLY current user objects.
     userfolder_list = Folder.objects.filter(user_id=request.user)
 
@@ -258,6 +266,9 @@ def folder_entry(request, folder_id):
     # TODO: Customize timezones based on a Settings model which stores timezones
     timezone.activate('America/Chicago')
 
+    # Lets the view know that the entry was not updated yet; POST statement resolves this to True if needed
+    entry_updated = False
+
     # Form with the object data
     userfolder_form = NewFolderForm(instance=userfolder_entry)
 
@@ -280,12 +291,15 @@ def folder_entry(request, folder_id):
 
             # Verify there are no errors in the form, then save and return a successful page
             if len(userfolder_form.errors) == 0:
-                new_folder = userfolder_form.save()
-                return redirect('/painlesspass/folder_entry/' + str(new_folder.pk))
+                userfolder_form.save()
+
+                # Lets the view know that the entry was updated
+                entry_updated = True
 
     context = {
         "userfolder_entry": userfolder_entry,
         "userfolder_form": userfolder_form,
+        "entry_updated": entry_updated,
     }
     return render(request, "painlessapp/folder_entry.html", context)
 

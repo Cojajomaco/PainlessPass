@@ -6,7 +6,7 @@ from django.db import models
 class Folder(models.Model):
     # name: title of the folder
     # user_id: user who owns the folder
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=50)
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     # These use Django auto_add features to add a timestamp to show
@@ -31,9 +31,9 @@ class UserPass(models.Model):
     # uri: URI of the stored password (website)
     # folder: category for password; user created
     # user_id: user who owns the password
-    name = models.CharField(max_length=255, help_text="The title of your password to "
+    name = models.CharField(max_length=100, help_text="The title of your password to "
                                                       "describe what it is.")
-    username = models.CharField(max_length=255, blank=True, help_text="The username for your password.")
+    username = models.CharField(max_length=100, blank=True, help_text="The username for your password.")
 
     # Might seem backwards to allow blank passwords in a password storage app
     # But there may be cases where a user wants to store a username or notes

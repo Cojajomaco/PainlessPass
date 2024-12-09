@@ -29,6 +29,22 @@ confirmDeleteButtons.forEach(button => {
   button.addEventListener("click", confirmDelete);
 });
 
+// Confirm before editing something
+function confirmEdit(event) {
+    if (!confirm("Are you sure you want to save your edit?\n\nThere is no way to restore.")) {
+        event.preventDefault();
+  } else {
+        const baseURL = window.location.origin;
+        window.location(baseURL);
+    }
+}
+
+// Confirmation for edit buttons
+const confirmEditButtons = document.querySelectorAll(".confirm-edit");
+confirmEditButtons.forEach(button => {
+  button.addEventListener("click", confirmEdit);
+});
+
 // Filtering table by Folders (dropdown menu) and Search bar
 $(document).ready(function() {
     if($('#folderChoice')) {
@@ -78,15 +94,27 @@ $(document).ready(function() {
     if($('#pass-toggle')) {
         const inputField = document.getElementById("id_password");
         const toggleIcon = document.getElementById("pass-toggle");
+        const passGenButton = document.getElementById("pass-gen");
 
         toggleIcon.addEventListener("click", function() {
             if (inputField.type === "password") {
                 inputField.type = "text";
-                toggleIcon.className = "bi bi-eye-fill float-end"; // Change to a different eye icon
+                toggleIcon.className = "bi bi-eye-fill float-end ps-1"; // Change to a different eye icon
             } else {
                 inputField.type = "password";
-                toggleIcon.className = "bi bi-eye-slash-fill float-end";
+                toggleIcon.className = "bi bi-eye-slash-fill float-end ps-1";
             }
         });
+
+        /* TODO: Generate password and replace value field from API */
+        /* Rotates the password generator icon, replaces field with generated password, makes it visible if it's not */
+        passGenButton.addEventListener("click", function() {
+            passGenButton.classList.toggle("rotated");
+            if (inputField.type === "password") {
+                inputField.type = "text";
+                toggleIcon.className = "bi bi-eye-fill float-end ps-1"; // Change to a different eye icon
+            }
+        })
     }
+
 });

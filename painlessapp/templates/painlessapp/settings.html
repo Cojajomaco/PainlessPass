@@ -6,4 +6,7 @@
 
 {% block content %}
     <p>PainlessPass Settings</p>
+    {% if user.is_authenticated %}
+        {{ user }}
+    {% endif %}
 {% endblock %}

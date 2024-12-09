@@ -56,7 +56,10 @@
                     </div>
                     <div class="mb-4">
                         <p class="mb-0">Password:
-                            <i role="button" class="bi bi-eye-slash-fill float-end" id="pass-toggle"></i>
+                            <i role="button" class="bi bi-eye-slash-fill float-end ps-1" id="pass-toggle"
+                               title="Toggle password visibility"></i>
+                            <i role="button" class="bi bi-arrow-repeat float-end px-1" id="pass-gen"
+                               title="Generate password"></i>
                         </p>
                         {{ userpass_form.password }}
                     </div>
@@ -76,7 +79,7 @@
                             <li class="list-group-item">Date Created: {{ userpass_entry.created_at }}</li>
                             <li class="list-group-item">Date Modified: {{ userpass_entry.modified_at }}</li>
                         </ul>
-                <button type="submit" class="btn btn-secondary w-100 form-button">Edit</button>
+                <button type="submit" class="btn btn-secondary w-100 form-button confirm-edit">Edit</button>
             </form>
         </div>
     </div>

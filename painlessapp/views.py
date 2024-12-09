@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import RegistrationForm, NewPasswordForm, NewFolderForm
@@ -13,11 +13,17 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth import login as auth_login, logout
 from django.http import HttpResponseRedirect
 from django.utils import timezone
+import random
+import linecache
 
+# Wordlist and its length
+wordlist = "google-5000-english-usa-no-swears-medium.txt"
+wordlist_length = 5000
 
 # First page as a generic landing page.
 # Should eventually prompt to log in or register.
 def index(request):
+
     # Redirect logged-in users to their password list.
     if request.user.is_authenticated:
         return redirect("pass_list")
@@ -29,6 +35,7 @@ def index(request):
 # list of all of their passwords, along with a navbar for other services
 # such as password generation, settings, and logging out.
 def home(request):
+
     # Redirect logged-in users to their password list.
     if request.user.is_authenticated:
         return redirect("pass_list")
@@ -39,30 +46,39 @@ def home(request):
 # Register page, also straightforward.
 # IT should also include a prompt to sign in if you have an account.
 def register(request):
+
     # Redirect logged-in users to their password list.
     if request.user.is_authenticated:
         return redirect("pass_list")
+
     # If user submits a POST request to /register/, try to create account.
     if request.method == 'POST':
+
         # Create the form object to validate data
         register_form = RegistrationForm(request.POST)
         if register_form.is_valid():
+
             # Grab user data
             new_username = register_form.cleaned_data['username']
+
             # Check username isn't taken
             if User.objects.filter(username=new_username).exists():
                 messages.info(request, "Username is taken.")
                 return redirect('register')
+
             # Try to grab new password
             try:
                 new_pass = register_form.clean_password2()
             except forms.ValidationError:
+
                 # If passwords don't match, redirect with error message explaining
                 messages.info(request, "Passwords do not match.")
                 return redirect('register')
+
             # This actually creates the user and initiates some important objects.
             instantiate_user(new_username, new_pass)
             user = authenticate(username=new_username, password=new_pass)
+
             # Get user password, decrypt GEK, store in volatile cache
             decrypt_and_store_key(user, new_pass)
             login(request, user)
@@ -76,9 +92,11 @@ def register(request):
 
 @login_required
 def pass_list(request):
+
     # Redirect logged-out users to the signin page.
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
+
     # Filter list to ONLY current user objects.
     userpass_list = UserPass.objects.filter(user_id=request.user)
 
@@ -122,9 +140,11 @@ def pass_entry(request, pass_id):
     password_form = NewPasswordForm(user_id=request.user, instance=userpass_entry)
 
     if request.method == 'POST':
+
         # Create the form object to validate data
         password_form = NewPasswordForm(request.POST, user_id=request.user, instance=userpass_entry)
         if password_form.is_valid():
+
             # Pass to function that does the encryption
             enc_NewPass = encrypt_user_pass(request.user.id, password_form.clean().get('password'))
 
@@ -147,6 +167,7 @@ def pass_entry(request, pass_id):
 
 @login_required
 def pass_new(request):
+
     # Redirect logged-out users to the signin page.
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
@@ -160,9 +181,11 @@ def pass_new(request):
         return redirect('/painlesspass/login/')
 
     if request.method == 'POST':
+
         # Create the form object to validate data
         password_form = NewPasswordForm(request.POST, user_id=request.user)
         if password_form.is_valid():
+
             # Set user_id (owner) of object to the logged-in user.
             password_form.instance.user_id = request.user
 
@@ -177,6 +200,7 @@ def pass_new(request):
             return redirect('/painlesspass/pass_entry/' + str(new_pass.pk))
 
     else:
+
         # Creates password form and feeds the currently logged-in user as an argument.
         password_form = NewPasswordForm(user_id=request.user)
     context = {"password_form": password_form}
@@ -186,6 +210,7 @@ def pass_new(request):
 # Settings page for individual user setting configuration.
 @login_required
 def settings(request):
+
     # Redirect logged-out users to the signin page.
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
@@ -212,6 +237,7 @@ def folder_new(request):
             # Form Error Cases
             # Saving cleaned name for use in error checks
             new_folder_name = folder_form.cleaned_data['name']
+
             # Prevent naming folder "No Folder"
             if new_folder_name == "No Folder":
                 folder_form.add_error('name', 'The folder cannot be titled "No Folder".')
@@ -310,11 +336,13 @@ def folder_delete(request, folder_id):
     # Redirect logged-out users to the signin page.
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
+
     # Make sure user can access the folder
     userfolder_entry = Folder.objects.get(pk=folder_id, user_id=request.user)
     if userfolder_entry.user_id != request.user:
         return HttpResponse('Unauthorized', status=401)
     elif userfolder_entry.user_id == request.user:
+
         # Can't delete No Folder item
         if userfolder_entry.name == "No Folder":
             return HttpResponse('Unauthorized', status=401)
@@ -356,3 +384,53 @@ class CustomLoginView(LoginView):
         # Get user password, decrypt GEK, store in volatile cache for usage in encryption functions
         decrypt_and_store_key(self.request.user, form.clean().get('password'))
         return HttpResponseRedirect(self.get_success_url())
+
+# Generates a password based on user specified password generation settings.
+def pass_gen(request):
+
+    # Password we will build from the wordlist
+    generated_password = ""
+
+    # TODO: Let this be updated with user variables
+    # Amount of words to use in password
+    num_words = 3
+
+    # Should first letter be capitalized
+    uppercase = True
+
+    # Should a number be added
+    use_number = True
+
+    # If a number should be added, determine where
+    if use_number:
+        number_added_word = random.randint(0, num_words - 1)
+    else:
+        number_added_word = -1
+
+
+    # Get number of words, add to password, and separate them. Sprinkle in a number.
+    curr_word = 0
+    while curr_word < num_words:
+
+        # Find a word to grab from the list
+        grab_word_num = random.randint(0, wordlist_length -1)
+
+        # Grab it, clean it a bit, and add numbers, capitals, or hyphens as needed for the phrase
+        line = linecache.getline(wordlist, grab_word_num)
+        line = line.replace("\n", "")
+        if uppercase:
+            line = line.capitalize()
+        generated_password += line
+        if curr_word == number_added_word:
+            generated_password += str(random.randint(0, 9))
+        if curr_word != (num_words - 1):
+            generated_password += "-"
+
+        curr_word += 1
+
+    # Response to return in JSON format
+    pass_json = {
+        'gen_password': generated_password,
+    }
+
+    return JsonResponse(pass_json)

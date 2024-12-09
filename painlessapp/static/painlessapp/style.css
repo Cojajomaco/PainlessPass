@@ -206,3 +206,12 @@ form {
 	max-width: 150px;
 	word-wrap: break-word;
 }
+
+/* Rotation for buttons when clicked... */
+#pass-gen {
+	transition: transform 1.0s ease;
+}
+
+.rotated {
+	transform: rotate(360deg);
+}

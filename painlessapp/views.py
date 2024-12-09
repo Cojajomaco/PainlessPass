@@ -423,6 +423,8 @@ def pass_gen(request):
         generated_password += line
         if curr_word == number_added_word:
             generated_password += str(random.randint(0, 9))
+
+        # If we aren't the last word, add a hyphen to the phrase
         if curr_word != (num_words - 1):
             generated_password += "-"
 

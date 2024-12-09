@@ -1,4 +1,5 @@
 {% extends "base_generic.html" %}
+{% load static %}
 
 {% block title %}
     <title>PainlessPass - Pass_Entry</title>
@@ -61,4 +62,9 @@
             </form>
         </div>
     </div>
+{% endblock %}
+
+{% block custom_scripts %}
+<!-- Custom JS -->
+<script src="{% static 'painlessapp/password-functions.js' %}"></script>
 {% endblock %}

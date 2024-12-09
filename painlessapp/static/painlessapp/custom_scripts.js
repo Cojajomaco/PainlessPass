@@ -35,7 +35,7 @@ function confirmEdit(event) {
         event.preventDefault();
   } else {
         const baseURL = window.location.origin;
-        window.location(baseURL);
+        window.location(baseURL + window.location.pathname);
     }
 }
 
@@ -89,32 +89,4 @@ $(document).ready(function() {
             });
         });
     }
-    /* Toggles password field visibility based on pressing an icon above the field */
-    /* Made with help from Google AI */
-    if($('#pass-toggle')) {
-        const inputField = document.getElementById("id_password");
-        const toggleIcon = document.getElementById("pass-toggle");
-        const passGenButton = document.getElementById("pass-gen");
-
-        toggleIcon.addEventListener("click", function() {
-            if (inputField.type === "password") {
-                inputField.type = "text";
-                toggleIcon.className = "bi bi-eye-fill float-end ps-1"; // Change to a different eye icon
-            } else {
-                inputField.type = "password";
-                toggleIcon.className = "bi bi-eye-slash-fill float-end ps-1";
-            }
-        });
-
-        /* TODO: Generate password and replace value field from API */
-        /* Rotates the password generator icon, replaces field with generated password, makes it visible if it's not */
-        passGenButton.addEventListener("click", function() {
-            passGenButton.classList.toggle("rotated");
-            if (inputField.type === "password") {
-                inputField.type = "text";
-                toggleIcon.className = "bi bi-eye-fill float-end ps-1"; // Change to a different eye icon
-            }
-        })
-    }
-
 });

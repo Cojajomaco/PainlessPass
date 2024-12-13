@@ -17,6 +17,7 @@ urlpatterns = [
     path("folder_delete/<int:folder_id>/", views.folder_delete, name="folder_delete"),
     path("pass_delete/<int:pass_id>/", views.pass_delete, name="pass_delete"),
     path("login/", views.CustomLoginView.as_view(), name="login"),
+    path("generator/", views.generator, name="generator"),
 
     # API REQUESTS
     path("api/pass_gen/", views.pass_gen, name="pass_gen"),

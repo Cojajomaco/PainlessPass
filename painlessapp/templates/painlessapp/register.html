@@ -49,9 +49,13 @@
                     {{ register_form.username }}
                 </div>
                 <div class="mb-4">
-                    <p class="mb-0">Password:<i class="bi-question-circle float-end"
+                    <p class="mb-0">Password:
+                    <i class="bi-question-circle float-end ps-1"
                         title="Passwords must have at least 10 characters, be uncommon, and not contain only numbers.">
-                        </i></p>
+                    </i>
+                    <i role="button" class="bi bi-eye-slash-fill float-end px-1" id="pass-toggle"
+                       title="Toggle password visibility"></i>
+                    </p>
                     {{ register_form.password1 }}
                 </div>
 

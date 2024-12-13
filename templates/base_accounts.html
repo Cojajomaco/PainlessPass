@@ -29,11 +29,13 @@
 					<button type="submit">Log Out</button>
 				</form></li>
 				<li class="top-nav-bar"><a href="/painlesspass/settings">Settings</a></li>
+				<li class="top-nav-bar"><a href="/painlesspass/generator">Generator</a></li>
 				<li class="top-nav-bar"><a href="/painlesspass/pass_list">Passwords</a></li>
                 {% else %}
 				<!-- Log in button to display only if user is NOT authenticated -->
 				<li class="top-nav-bar"><a href="{% url 'login' %}">Log In</a></li>
                 <li class="top-nav-bar"><a href="/painlesspass/register">Register</a></li>
+				<li class="top-nav-bar"><a href="/painlesspass/generator">Generator</a></li>
                 {% endif %}
 			</ul>
 		</div>
@@ -59,6 +61,7 @@
         crossorigin="anonymous"></script>
 <!-- Custom JS -->
 <script src="{% static 'painlessapp/custom_scripts.js' %}"></script>
+<script src="{% static 'painlessapp/password-functions.js' %}"></script>
 
 </body>
 </html>

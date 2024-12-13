@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block title %}
+    <title>PainlessPass - Generator</title>
+{% endblock %}
+
+{% block content %}
+    <div>    <h3 class="pt-5 px-5 pb-2 mt-5 mx-5 mb-1 text-center fw-bold">Password Generator</h3></div>
+    <div class="px-5 pb-0 mx-5 mb-0 text-center border-bottom d-flex justify-content-center">
+        <div class="input-group mb-4 d-flex justify-content-center w-50" style="min-width: 500px;">
+              <input type="text" class="form-control" placeholder="Generate a password..." id="id_password"
+                     style="width: 50%;" aria-label="Recipient's username" aria-describedby="basic-addon2">
+              <div class="input-group-append btn-group">
+                <button class="btn btn-outline-secondary" type="button" title="Generate password"><i role="button"
+                               class="bi bi-arrow-repeat float-end px-1" id="pass-gen"></i>
+                </button>
+                <button class="btn btn-outline-secondary" type="button" title="Copy password"><i role="button"
+                               class="bi bi-copy float-end px-1" id="pass-copy"></i>
+                </button>
+              </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_scripts %}
+<!-- Custom JS -->
+<script src="{% static 'painlessapp/password-functions.js' %}"></script>
+{% endblock %}

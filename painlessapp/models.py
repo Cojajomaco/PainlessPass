@@ -38,7 +38,6 @@ class UserPass(models.Model):
     # Might seem backwards to allow blank passwords in a password storage app
     # But there may be cases where a user wants to store a username or notes
     # Without actually hosting any password data
-    # TODO: Make sure blank password doesn't crash due to encryption function
     password = models.CharField(max_length=255, help_text="This is your password you want to store.")
     uri = models.URLField(max_length=200, blank=True, help_text="This is the website or application "
                                                                 "for your password.")

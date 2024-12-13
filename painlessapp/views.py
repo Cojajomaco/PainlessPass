@@ -20,10 +20,10 @@ import linecache
 wordlist = "google-5000-english-usa-no-swears-medium.txt"
 wordlist_length = 5000
 
+
 # First page as a generic landing page.
 # Should eventually prompt to log in or register.
 def index(request):
-
     # Redirect logged-in users to their password list.
     if request.user.is_authenticated:
         return redirect("pass_list")
@@ -35,7 +35,6 @@ def index(request):
 # list of all of their passwords, along with a navbar for other services
 # such as password generation, settings, and logging out.
 def home(request):
-
     # Redirect logged-in users to their password list.
     if request.user.is_authenticated:
         return redirect("pass_list")
@@ -46,7 +45,6 @@ def home(request):
 # Register page, also straightforward.
 # IT should also include a prompt to sign in if you have an account.
 def register(request):
-
     # Redirect logged-in users to their password list.
     if request.user.is_authenticated:
         return redirect("pass_list")
@@ -92,7 +90,6 @@ def register(request):
 
 @login_required
 def pass_list(request):
-
     # Redirect logged-out users to the signin page.
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
@@ -144,7 +141,6 @@ def pass_entry(request, pass_id):
         # Create the form object to validate data
         password_form = NewPasswordForm(request.POST, user_id=request.user, instance=userpass_entry)
         if password_form.is_valid():
-
             # Pass to function that does the encryption
             enc_NewPass = encrypt_user_pass(request.user.id, password_form.clean().get('password'))
 
@@ -156,7 +152,6 @@ def pass_entry(request, pass_id):
             # Lets the view know that the entry was updated
             entry_updated = True
 
-
     context = {
         "userpass_entry": userpass_entry,
         "userpass_form": password_form,
@@ -167,7 +162,6 @@ def pass_entry(request, pass_id):
 
 @login_required
 def pass_new(request):
-
     # Redirect logged-out users to the signin page.
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
@@ -185,7 +179,6 @@ def pass_new(request):
         # Create the form object to validate data
         password_form = NewPasswordForm(request.POST, user_id=request.user)
         if password_form.is_valid():
-
             # Set user_id (owner) of object to the logged-in user.
             password_form.instance.user_id = request.user
 
@@ -210,7 +203,6 @@ def pass_new(request):
 # Settings page for individual user setting configuration.
 @login_required
 def settings(request):
-
     # Redirect logged-out users to the signin page.
     if not request.user.is_authenticated:
         return redirect("/accounts/login")
@@ -385,9 +377,9 @@ class CustomLoginView(LoginView):
         decrypt_and_store_key(self.request.user, form.clean().get('password'))
         return HttpResponseRedirect(self.get_success_url())
 
+
 # Generates a password based on user specified password generation settings.
 def pass_gen(request):
-
     # Password we will build from the wordlist
     generated_password = ""
 
@@ -407,13 +399,12 @@ def pass_gen(request):
     else:
         number_added_word = -1
 
-
     # Get number of words, add to password, and separate them. Sprinkle in a number.
     curr_word = 0
     while curr_word < num_words:
 
         # Find a word to grab from the list
-        grab_word_num = random.randint(0, wordlist_length -1)
+        grab_word_num = random.randint(0, wordlist_length - 1)
 
         # Grab it, clean it a bit, and add numbers, capitals, or hyphens as needed for the phrase
         line = linecache.getline(wordlist, grab_word_num)
@@ -436,3 +427,9 @@ def pass_gen(request):
     }
 
     return JsonResponse(pass_json)
+
+
+# Very simple view that just returns the generator page. The generator itself uses JS to hit the pass_gen API view.
+# Anyone can use this.
+def generator(request):
+    return render(request, "painlessapp/generator.html")

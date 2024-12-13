@@ -26,7 +26,10 @@
                         {{ form.username }}
                     </div>
                     <div class="mb-4">
-                        <p class="mb-0">Password:</p>
+                        <p class="mb-0">Password:
+                        <i role="button" class="bi bi-eye-slash-fill float-end ps-1" id="pass-toggle"
+                               title="Toggle password visibility"></i>
+                        </p>
                         {{ form.password }}
                     </div>
                     <button type="submit" class="btn btn-secondary w-100 mb-4">Log In</button>

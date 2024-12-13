@@ -1,12 +1,25 @@
 {% extends "base_generic.html" %}
+{% load static %}
 
 {% block title %}
     <title>PainlessPass - Settings</title>
 {% endblock %}
 
 {% block content %}
-    <p>PainlessPass Settings</p>
+    <div class="pt-5 px-5 pb-0 mt-5 mx-5 mb-0 text-center border-bottom">
     {% if user.is_authenticated %}
-        {{ user }}
+        <p>Welcome, {{ user }}!</p>
     {% endif %}
+        <br>
+        <p>This page is currently under construction.</p>
+        <p>Ways to edit your timezone, password generation, password storage,
+        and user account details would be here.</p>
+        <div class="overflow-hidden" style="max-height: 75%;">
+            <div class="container px-2">
+                <img src="{% static 'painlessapp/images/settings.png' %}"
+                     class="img-fluid border rounded-3 shadow-lg mb-4" alt="PainlessPass Example"
+                     width="272" height="382" loading="lazy">
+            </div>
+        </div>
+    </div>
 {% endblock %}

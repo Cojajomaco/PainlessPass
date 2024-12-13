@@ -12,21 +12,28 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from operator import truediv
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Loading app.env for environment variables
+os_env = os.environ.get
+load_dotenv(BASE_DIR / "app.env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-f341)9&0nk=na6fl7gz5_wqvmiqofs!3*2_%5!)j@d0!5-%0-u'
+SECRET_KEY = os.environ["DJANGO_SECRET"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG", 'False').lower() in ('true', '1', 't')
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    ALLOWED_HOSTS = []
+else:
+    ALLOWED_HOSTS = [os.getenv("DJANGO_HOST")]
 
 
 # Application definition
@@ -39,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'painlessapp',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

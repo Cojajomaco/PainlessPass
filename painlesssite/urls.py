@@ -24,4 +24,5 @@ urlpatterns = [
     path('accounts/login/', CustomLoginView.as_view(), name="login"),
     path('accounts/', include("django.contrib.auth.urls")),
     path('painlesspass/', include('painlessapp.urls')),
+    path('', include('painlessapp.urls')),
 ]
